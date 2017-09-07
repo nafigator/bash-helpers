@@ -161,3 +161,51 @@ parse_options() {
 
 	return ${result}
 }
+
+# Convert string value to float
+float() {
+	if [ ${1} = '""' ] || [ -z ${1} ]; then
+		echo 0
+		return 0
+	fi
+
+	echo $(echo ${1} | sed 's/,/\./' | bc -l)
+
+	return 0
+}
+
+##
+# Example for parse_options() with long arguments
+#
+#parse_options() {
+#	local result=0
+#	local long_optarg=''
+#
+#	while getopts :vhd-:b: param; do
+#		[ ${param} == '?' ] && found=${OPTARG} || found=${param}
+#
+#		debug "Found option '$found'"
+#
+#		case ${param} in
+#			v ) print_version; exit 0;;
+#			h ) usage_help; exit 0;;
+#			d ) DEBUG=1;;
+#			b ) BRANCH=$OPTARG;;
+#			- ) long_optarg="${OPTARG#*=}"
+#				case $OPTARG in
+#					version   ) print_version; exit 0;;
+#					help      ) usage_help; exit 0;;
+#					debug     ) DEBUG=1;;
+#					long_opt=?* ) BRANCH=${long_optarg};;
+#					*         ) warning "Illegal option --$OPTARG"; result=2;;
+#				esac;;
+#			* ) warning "Illegal option -$OPTARG"; result=2;;
+#		esac
+#	done
+#	shift $((OPTIND-1))
+#
+#	debug "Variable DEBUG: '$DEBUG'"
+#	debug "parse_options() result: $result"
+#
+#	return ${result}
+#}
