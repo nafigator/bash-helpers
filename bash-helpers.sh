@@ -80,14 +80,14 @@ status() {
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 > 0 ]; then
-		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
 
