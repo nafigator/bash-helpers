@@ -3,7 +3,7 @@
 readonly RED=`tput setaf 1`
 readonly GREEN=`tput setaf 2`
 readonly YELLOW=`tput setaf 3`
-readonly GRAY=`tput setaf 232`
+readonly GRAY=`tput setaf 237`
 readonly BOLD=`tput bold`
 readonly CLR=`tput sgr0`
 
