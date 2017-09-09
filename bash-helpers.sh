@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+readonly TERM='xterm-256color'
 readonly RED=`tput setaf 1`
 readonly GREEN=`tput setaf 2`
 readonly YELLOW=`tput setaf 3`
