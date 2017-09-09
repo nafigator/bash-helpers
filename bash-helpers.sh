@@ -72,7 +72,7 @@ debug() {
 # status 'Upload scripts' $?
 # status 'Run operation' OK
 status() {
-	if [ -z $1 ] || [ -z $2 ]; then
+	if [ -z "$1" ] || [ -z "$2" ]; then
 		error "Not found required parameters!"
 		return 1
 	fi
@@ -137,7 +137,7 @@ parse_options() {
 	local result=0
 
 	while getopts :vhd-: param; do
-		[ ${param} == '?' ] && found=${OPTARG} || found=${param}
+		[ ${param} = '?' ] && found=${OPTARG} || found=${param}
 
 		debug "Found option '$found'"
 
@@ -182,7 +182,7 @@ float() {
 #	local long_optarg=''
 #
 #	while getopts :vhd-:b: param; do
-#		[ ${param} == '?' ] && found=${OPTARG} || found=${param}
+#		[ ${param} = '?' ] && found=${OPTARG} || found=${param}
 #
 #		debug "Found option '$found'"
 #
