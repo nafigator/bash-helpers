@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-readonly RED=`tput setaf 1`
-readonly GREEN=`tput setaf 2`
-readonly YELLOW=`tput setaf 3`
-readonly GRAY=`tput setaf 237`
-readonly BOLD=`tput bold`
-readonly CLR=`tput sgr0`
+# https://en.wikipedia.org/wiki/ANSI_escape_code
+readonly RED="\e[31m"
+readonly GREEN="\e[32m"
+readonly YELLOW="\e[33m"
+readonly GRAY="\e[38;5;242m"
+readonly BOLD="\e[1m"
+readonly CLR="\e[0m"
 
 ##
 # This is example of usage_help() function.
