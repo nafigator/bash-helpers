@@ -40,12 +40,6 @@ format_date() {
 	return 0
 }
 
-format_date_dbg() {
-	printf "$GRAY$(date +'%Y-%m-%d %H:%M:%S.%N')$CLR"
-
-	return 0
-}
-
 # Function for error messages
 error() {
 	printf "[$(format_date)]: ${RED}ERROR:$CLR $@\n" >&2
@@ -63,7 +57,7 @@ warning() {
 
 # Function for debug messages
 debug() {
-	[ ! -z ${DEBUG} ] && printf "[$(format_date_dbg)]: ${GREEN}DEBUG:$CLR $@\n"
+	[ ! -z ${DEBUG} ] && printf "[$(format_date)]: ${GREEN}DEBUG:$CLR $@\n"
 }
 
 # Function for operation status
@@ -102,13 +96,13 @@ status_dbg() {
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date_dbg)]: ${GREEN}DEBUG:$CLR %-60b[$GREEN%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-60b[$GREEN%s$CLR]\n" "$1" "$2"
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date_dbg)]: ${GREEN}DEBUG:$CLR %-60b[$RED%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-60b[$RED%s$CLR]\n" "$1" "$2"
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date_dbg)]: ${GREEN}DEBUG:$CLR %-60b[$GREEN%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-60b[$GREEN%s$CLR]\n" "$1" "$2"
 	elif [ $2 > 0 ]; then
-		printf "[$(format_date_dbg)]: ${GREEN}DEBUG:$CLR %-60b[$RED%s$CLR]\n" "$1" "$2"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-60b[$RED%s$CLR]\n" "$1" "$2"
 		result=1
 	fi
 
