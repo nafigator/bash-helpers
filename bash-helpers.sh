@@ -174,14 +174,12 @@ float() {
 
 # Unset colors if special variable set
 unset_colors() {
-	if [ ! -z ${NO_CLI_COLOR} ]; then
-		RED=
-		GREEN=
-		YELLOW=
-		GRAY=
-		BOLD=
-		CLR=
-	fi
+	RED=
+	GREEN=
+	YELLOW=
+	GRAY=
+	BOLD=
+	CLR=
 }
 
 ##
