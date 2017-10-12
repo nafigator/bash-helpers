@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
-readonly RED="\e[31m"
-readonly GREEN="\e[32m"
-readonly YELLOW="\e[33m"
-readonly GRAY="\e[38;5;242m"
-readonly BOLD="\e[1m"
-readonly CLR="\e[0m"
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+GRAY="\e[38;5;242m"
+BOLD="\e[1m"
+CLR="\e[0m"
 
 ##
 # This is example of usage_help() function.
