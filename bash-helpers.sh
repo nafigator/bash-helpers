@@ -9,7 +9,16 @@ BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
 
-readonly BASH_HELPERS_VERSION='0.1.0'
+readonly BASH_HELPERS_VERSION='0.1.1'
+
+unset_colors() {
+	RED=
+	GREEN=
+	YELLOW=
+	GRAY=
+	BOLD=
+	CLR=
+}
 
 ##
 # This is example of usage_help() function.
