@@ -7,6 +7,9 @@ YELLOW="\e[33m"
 GRAY="\e[38;5;242m"
 BOLD="\e[1m"
 CLR="\e[0m"
+DEBUG=
+
+readonly BASH_HELPERS_VERSION='0.1.0'
 
 ##
 # This is example of usage_help() function.
