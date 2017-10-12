@@ -9,16 +9,7 @@ BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
 
-readonly BASH_HELPERS_VERSION='0.1.1'
-
-unset_colors() {
-	RED=
-	GREEN=
-	YELLOW=
-	GRAY=
-	BOLD=
-	CLR=
-}
+readonly BASH_HELPERS_VERSION='0.2.0'
 
 ##
 # This is example of usage_help() function.
@@ -179,6 +170,18 @@ float() {
 	echo $(echo ${1} | sed 's/,/\./' | bc -l)
 
 	return 0
+}
+
+# Unset colors if special variable set
+unset_colors() {
+	if [ ! -z ${NO_CLI_COLOR} ]; then
+		RED=
+		GREEN=
+		YELLOW=
+		GRAY=
+		BOLD=
+		CLR=
+	fi
 }
 
 ##
