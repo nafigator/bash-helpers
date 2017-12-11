@@ -8,8 +8,9 @@ GRAY="\e[38;5;242m"
 BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
+STATUS_LENGTH=60
 
-readonly BASH_HELPERS_VERSION='0.2.1'
+readonly BASH_HELPERS_VERSION='0.2.2'
 
 ##
 # This is example of usage_help() function.
@@ -77,14 +78,14 @@ status() {
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: %-60b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 > 0 ]; then
-		printf "[$(format_date)]: %-60b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
 
@@ -95,16 +96,19 @@ status() {
 status_dbg() {
 	[ -z ${DEBUG} ] && return 0
 
+	local length=$(( ${STATUS_LENGTH} - 7 ))
 	local result=0
 
+	debug "length: $length"
+
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-53b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-53b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-53b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 > 0 ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-53b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
 
