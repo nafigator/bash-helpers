@@ -9,7 +9,7 @@ BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
 
-readonly BASH_HELPERS_VERSION='0.2.0'
+readonly BASH_HELPERS_VERSION='0.2.1'
 
 ##
 # This is example of usage_help() function.
@@ -37,10 +37,9 @@ readonly BASH_HELPERS_VERSION='0.2.0'
 #	printf "example.sh ${BOLD}${VERSION}${CLR} by Yancharuk Alexander\n\n"
 #}
 
+# Function for datetime output
 format_date() {
 	printf "$GRAY$(date +'%Y-%m-%d %H:%M:%S')$CLR"
-
-	return 0
 }
 
 # Function for error messages
