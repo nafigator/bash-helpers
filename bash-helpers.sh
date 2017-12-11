@@ -10,7 +10,7 @@ CLR="\e[0m"
 DEBUG=
 STATUS_LENGTH=60
 
-readonly BASH_HELPERS_VERSION='0.2.2'
+readonly BASH_HELPERS_VERSION='0.3.0'
 
 ##
 # This is example of usage_help() function.
@@ -71,7 +71,7 @@ debug() {
 # status 'Run operation' OK
 status() {
 	if [ -z "$1" ] || [ -z "$2" ]; then
-		error "Not found required parameters!"
+		error "status(): not found required parameters!"
 		return 1
 	fi
 
@@ -84,7 +84,7 @@ status() {
 		result=1
 	elif [ $2 = 0 ]; then
 		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
-	elif [ $2 > 0 ]; then
+	elif [ $2 -gt 0 ]; then
 		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
@@ -96,10 +96,15 @@ status() {
 status_dbg() {
 	[ -z ${DEBUG} ] && return 0
 
+	if [ -z "$1" ] || [ -z "$2" ]; then
+		error "status_dbg(): not found required parameters!"
+		return 1
+	fi
+
 	local length=$(( ${STATUS_LENGTH} - 7 ))
 	local result=0
 
-	debug "length: $length"
+	#debug "status_dbg length: $length"
 
 	if [ $2 = 'OK' ]; then
 		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
@@ -107,7 +112,7 @@ status_dbg() {
 		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
 	elif [ $2 = 0 ]; then
 		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
-	elif [ $2 > 0 ]; then
+	elif [ $2 -gt 0 ]; then
 		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
@@ -118,18 +123,21 @@ status_dbg() {
 # Function for checking script dependencies
 check_dependencies() {
 	local result=0
+	local cmd_status
 
 	for i in ${@}; do
 		command -v ${i} >/dev/null 2>&1
-		if [ $? -eq 0 ]; then
-			status_dbg "DEPENDENCY: $i" OK
-		else
+		cmd_status=$?
+
+		#status_dbg "DEPENDENCY: $i" ${cmd_status}
+
+		if [ ${cmd_status} -ne 0 ]; then
 			warning "$i command not available"
 			result=1
 		fi
 	done
 
-	debug "check_dependencies() result: $result"
+	#debug "check_dependencies() result: $result"
 
 	return ${result}
 }
