@@ -40,7 +40,7 @@ readonly BASH_HELPERS_VERSION='0.3.0'
 
 # Function for datetime output
 format_date() {
-	printf "$GRAY$(date +'%Y-%m-%d %H:%M:%S')$CLR"
+	printf "$GRAY$(date +%Y-%m-%d\ %H:%M:%S)$CLR"
 }
 
 # Function for error messages
