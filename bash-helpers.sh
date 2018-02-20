@@ -228,3 +228,16 @@ unset_colors() {
 #
 #	return ${result}
 #}
+
+# Function for getting bool values from config
+# Echoes 0|1
+get_config_bool() {
+	local value=$(git config --bool $1)
+	local result=0
+
+	if [ "$value" == 'true' ]; then
+		echo 1
+	fi
+
+	return ${result}
+}
