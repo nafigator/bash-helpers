@@ -8,9 +8,10 @@ GRAY="\e[38;5;242m"
 BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
-STATUS_LENGTH=60
+# this variable should be initialized in main() function
+#status_length=60
 
-readonly BASH_HELPERS_VERSION='0.3.0'
+readonly BASH_HELPERS_VERSION='0.3.1'
 
 ##
 # This is example of usage_help() function.
@@ -78,14 +79,14 @@ status() {
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" "OK"
 	elif [ $2 -gt 0 ]; then
-		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" "FAIL"
 		result=1
 	fi
 
@@ -101,7 +102,7 @@ status_dbg() {
 		return 1
 	fi
 
-	local length=$(( ${STATUS_LENGTH} - 7 ))
+	local length=$(( ${status_length} - 7 ))
 	local result=0
 
 	#debug "status_dbg length: $length"
@@ -118,6 +119,19 @@ status_dbg() {
 	fi
 
 	return ${result}
+}
+
+# Function for update status formatting length
+# Example: update_status_length ${files_array}
+update_status_length() {
+	for i in ${@}; do
+		debug "Element length: ${#i}"
+		debug "STATUS_LENGTH before check: ${status_length}"
+		if [ ${#i} -gt $(( ${status_length} - 11 )) ]; then
+			status_length=$(( ${status_length} + $(( ${#i} - ${status_length} + 12 ))  ))
+			debug "NEW STATUS_LENGTH: $status_length"
+		fi
+	done
 }
 
 # Function for checking script dependencies
