@@ -1,6 +1,6 @@
-[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Conventional Commits][Conventional commits badge]][Conventional commits src]
+[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
 # bash-helpers
-Collections of useful functions for usage in Bash scripts
+**Collections of useful functions for usage in Bash scripts**
 
 ## Installation
 
@@ -99,6 +99,8 @@ Read more on [SemVer.org](http://semver.org).
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
+[Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-brightgreen.svg
+[Versioning src]: https://semver.org
 [Colors definition img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/colors-definition.jpg
 [Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/messages-formatting.jpg
 [Status messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/status-messages.jpg
