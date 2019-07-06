@@ -1,4 +1,4 @@
-[![Conventional Commits][Conventional commits badge]][Conventional commits src]
+[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Conventional Commits][Conventional commits badge]][Conventional commits src]
 # bash-helpers
 Collections of useful functions for usage in Bash scripts
 
@@ -22,3 +22,7 @@ Collections of useful functions for usage in Bash scripts
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
+[Release img]: https://img.shields.io/badge/release-0.5.1-orange.svg
+[Release src]: https://github.com/nafigator/bash-helpers
+[License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+[License src]: https://tldrlegal.com/license/mit-license
