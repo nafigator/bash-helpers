@@ -89,6 +89,10 @@ Collections of useful functions for usage in Bash scripts
 	```
 	![Debug messages][Debug messages img]
 
+## Versioning
+This software follows *"Semantic Versioning"* specifications.
+Read more on [SemVer.org](http://semver.org).
+
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
 [Release img]: https://img.shields.io/badge/release-0.7.0-orange.svg
@@ -101,6 +105,3 @@ Collections of useful functions for usage in Bash scripts
 [Check dependencies img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/check-dependencies.jpg
 [Status messages alignment update img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/dynamically-update-status-alignment.jpg
 [Debug messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/debug-messages.jpg
-
-This software follows *"Semantic Versioning"* specifications.
-Read more on [SemVer.org](http://semver.org).
