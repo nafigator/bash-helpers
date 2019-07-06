@@ -31,7 +31,7 @@ DEBUG=
 # this variable should be initialized in main() function
 #STATUS_ALIGN=60
 
-BASH_HELPERS_VERSION=0.7.0
+BASH_HELPERS_VERSION=0.8.0
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
@@ -54,7 +54,8 @@ BASH_HELPERS_VERSION=0.7.0
 # Define it in your main script and modify for your needs.
 #
 #print_version() {
-#	printf "example.sh ${BOLD}${VERSION}${CLR} by Yancharuk Alexander\n\n"
+#	printf "example.sh ${BOLD}${VERSION}${CLR} by Yancharuk Alexander\n"
+#	printf "bash-helpers.sh ${BOLD}${BASH_HELPERS_VERSION}${CLR}\n\n"
 #}
 
 # Function for datetime output
@@ -191,11 +192,11 @@ float() {
 # Include script
 #
 # Example:
-#     include reload # load /usr/local/share/bash/includes/reload.sh
-#     include google/client # load /usr/local/share/bash/includes/google/client.sh
+#     include reload # load /usr/local/lib/bash/includes/reload.sh
+#     include google/client # load /usr/local/lib/bash/includes/google/client.sh
 function include() {
 	local result=0
-	local readonly includes_dir=/usr/local/share/bash/includes
+	local readonly includes_dir=/usr/local/lib/bash/includes
 	local readonly file="$includes_dir/$1.sh"
 
 	if [ -f "$file" ]; then

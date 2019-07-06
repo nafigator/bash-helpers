@@ -4,14 +4,14 @@
 
 ## Installation
 
-	[ -d /usr/local/share/bash/includes ] || sudo mkdir -p /usr/local/share/bash/includes
-	sudo curl -o /usr/local/share/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/bash-helpers.sh
+	[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
+	sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/bash-helpers.sh
 
 ## Usage
-1. Put bash libs into `/usr/local/share/bash/includes` dir.
+1. Put bash libs into `/usr/local/lib/bash/includes` dir.
 2. Source `bash-helpers.sh` in executable script:
 	```bash
-	. /usr/local/share/bash/includes/bash-helpers.sh
+	. /usr/local/lib/bash/includes/bash-helpers.sh
 	```
 ## Features:
 * **Defines human-readable variables for colors and formatting:**
@@ -96,7 +96,7 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-0.7.0-orange.svg
+[Release img]: https://img.shields.io/badge/release-0.8.0-orange.svg
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
