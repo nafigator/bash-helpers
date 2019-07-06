@@ -48,13 +48,26 @@ Collections of useful functions for usage in Bash scripts
 
 	Example:
 	```bash
+	# Define right statuses position 
 	status_length=30
-    test -d /usr/local/nonexistent
-    status 'Check /usr/local/nonexistent dir' $?
-    test -d /usr/local/bin
-    status 'Check /usr/local/bin dir' $?
+	test -d /usr/local/nonexistent
+	status 'Check /usr/local/nonexistent dir' $?
+	test -d /usr/local/bin
+	status 'Check /usr/local/bin dir' $?
 	```
 	![Status messages][Status messages img]
+* Dynamically update statuses position up on longest string in array
+
+	Example:
+	```bash
+	# Define right statuses position
+	status_length=6
+	declare -a messages
+	messages=(short long\ string string name)
+	update_status_length messages
+	for i in "${messages[@]}"; do status "$i" OK; done
+	```
+	![Status messages align update][Status messages align update img]
 * Checking dependencies.
 
 	Example:
@@ -73,3 +86,4 @@ Collections of useful functions for usage in Bash scripts
 [Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/messages-formatting.jpg
 [Status messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/status-messages.jpg
 [Check dependencies img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/check-dependencies.jpg
+[Status messages align update img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/dynamically-update-status-align.jpg

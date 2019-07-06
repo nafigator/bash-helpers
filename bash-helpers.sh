@@ -139,9 +139,9 @@ status_dbg() {
 	return ${result}
 }
 
-# Function for update status formatting length
+# Function for update status formatting length for longest string in array
 # Example:
-#     update_status_length ${files_array}
+#     update_status_length ${strings_array}
 update_status_length() {
 	for i in ${@}; do
 		debug "Element length: ${#i}"
