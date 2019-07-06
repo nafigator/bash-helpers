@@ -40,6 +40,7 @@
 
 	Example:
 	```bash
+	STATUS_ALIGN=30
 	include google/client || exit 1
 	include mysql/query-builder || exit 1
 	include logger; status 'Logger including' $? || exit 1
