@@ -26,7 +26,7 @@ Collections of useful functions for usage in Bash scripts
 	```bash
 	printf "${RED}ERROR:${CLR} Save failure"
 	```
-	![Alt Colors definition][Colors definition img]
+	[![Alt Colors definition][Colors definition img]]
 * Functions for nicely formatted messages `error`, `inform`, `warning`.
 
 	Examples:
@@ -35,7 +35,7 @@ Collections of useful functions for usage in Bash scripts
 	warning 'Make backup!'
 	error 'File not found'
 	```
-	![Alt Messages formatting][Messages formatting img]
+	[![Alt Messages formatting][Messages formatting img]]
 * Libs including.
 
 	Example:

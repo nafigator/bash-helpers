@@ -31,7 +31,7 @@ DEBUG=
 # this variable should be initialized in main() function
 #status_length=60
 
-BASH_HELPERS_VERSION=0.5.1
+BASH_HELPERS_VERSION=0.6.0
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
