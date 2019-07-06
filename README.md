@@ -26,7 +26,7 @@ Collections of useful functions for usage in Bash scripts
 	```bash
 	printf "${RED}ERROR:${CLR} Save failure"
 	```
-	[![Alt Colors definition][Colors definition img]]
+	![Colors definition][Colors definition img]
 * Functions for nicely formatted messages `error`, `inform`, `warning`.
 
 	Examples:
@@ -35,7 +35,7 @@ Collections of useful functions for usage in Bash scripts
 	warning 'Make backup!'
 	error 'File not found'
 	```
-	[![Alt Messages formatting][Messages formatting img]]
+	![Messages formatting][Messages formatting img]
 * Libs including.
 
 	Example:
@@ -51,5 +51,5 @@ Collections of useful functions for usage in Bash scripts
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
-[Colors definition img]: https://github.com/nafigator/bash-helpers/raw/master/images/messages-examples.jpg
-[Messages formatting img]: https://github.com/nafigator/bash-helpers/raw/master/images/messages-examples.jpg
+[Colors definition img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/colors-definition.jpg
+[Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/messages-formatting.jpg
