@@ -14,7 +14,7 @@ Collections of useful functions for usage in Bash scripts
 	. /usr/local/share/bash/includes/bash-helpers.sh
 	```
 ## Features:
-* Defines human-readable variables for colors and formatting:
+* **Defines human-readable variables for colors and formatting:**
 	- RED
 	- GREEN
 	- YELLOW
@@ -27,7 +27,7 @@ Collections of useful functions for usage in Bash scripts
 	printf "${RED}ERROR:${CLR} Save failure"
 	```
 	![Colors definition][Colors definition img]
-* Functions for nicely formatted messages `error`, `inform`, `warning`.
+* **Functions for nicely formatted messages `error`, `inform`, `warning`.**
 
 	Examples:
 	```bash
@@ -36,7 +36,7 @@ Collections of useful functions for usage in Bash scripts
 	error 'File not found'
 	```
 	![Messages formatting][Messages formatting img]
-* Libs including.
+* **Libs including.**
 
 	Example:
 	```bash
@@ -44,7 +44,7 @@ Collections of useful functions for usage in Bash scripts
 	include mysql/query-builder || exit 1
 	include logger || status 'Logger including' $? || exit 1
 	```
-* Status messages.
+* **Status messages.**
 
 	Example:
 	```bash
@@ -56,7 +56,7 @@ Collections of useful functions for usage in Bash scripts
 	status 'Check /usr/local/bin dir' $?
 	```
 	![Status messages][Status messages img]
-* Dynamically update statuses alignment up on longest string in array
+* **Dynamically update statuses alignment up on longest string in array.**
 
 	Example:
 	```bash
@@ -68,7 +68,7 @@ Collections of useful functions for usage in Bash scripts
 	for i in "${messages[@]}"; do status "$i" OK; done
 	```
 	![Status messages alignment update][Status messages alignment update img]
-* Checking dependencies.
+* **Checking dependencies.**
 
 	Example:
 	```bash
