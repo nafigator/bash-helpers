@@ -33,7 +33,6 @@ DEBUG=
 
 BASH_HELPERS_VERSION=0.5.1
 
-##
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
 #
@@ -51,7 +50,6 @@ BASH_HELPERS_VERSION=0.5.1
 #	return 0
 #}
 
-##
 # This is example of print_version() function.
 # Define it in your main script and modify for your needs.
 #
@@ -88,8 +86,8 @@ debug() {
 #
 # Usage: status MESSAGE STATUS
 # Examples:
-# status 'Upload scripts' $?
-# status 'Run operation' OK
+#     status 'Upload scripts' $?
+#     status 'Run operation' OK
 status() {
 	if [ -z "$1" ] || [ -z "$2" ]; then
 		error 'status(): not found required parameters!'
@@ -142,7 +140,8 @@ status_dbg() {
 }
 
 # Function for update status formatting length
-# Example: update_status_length ${files_array}
+# Example:
+#     update_status_length ${files_array}
 update_status_length() {
 	for i in ${@}; do
 		debug "Element length: ${#i}"
@@ -151,6 +150,7 @@ update_status_length() {
 			status_length=$(( ${status_length} + $(( ${#i} - ${status_length} + 12 ))  ))
 			debug "NEW STATUS_LENGTH: $status_length"
 		fi
+
 	done
 }
 
@@ -172,35 +172,6 @@ check_dependencies() {
 	done
 
 	#debug "check_dependencies() result: $result"
-
-	return ${result}
-}
-
-parse_options() {
-	local result=0
-
-	while getopts :vhd-: param; do
-		[ ${param} = '?' ] && found=${OPTARG} || found=${param}
-
-		debug "Found option '$found'"
-
-		case ${param} in
-			v ) print_version; exit 0;;
-			h ) usage_help; exit 0;;
-			d ) DEBUG=1;;
-			- ) case $OPTARG in
-					version ) print_version; exit 0;;
-					help    ) usage_help; exit 0;;
-					debug   ) DEBUG=1;;
-					*       ) warning "Illegal option --$OPTARG"; result=2;;
-				esac;;
-			* ) warning "Illegal option -$OPTARG"; result=2;;
-		esac
-	done
-	shift $((OPTIND-1))
-
-	debug "Variable DEBUG: '$DEBUG'"
-	debug "parse_options() result: $result"
 
 	return ${result}
 }
@@ -238,8 +209,8 @@ function include() {
 	return ${result}
 }
 
-# Variables cleanup
-cleanup() {
+# Bash-helpers variables cleanup
+helpers_cleanup() {
 	unset RED
 	unset GREEN
 	unset YELLOW
@@ -252,8 +223,40 @@ cleanup() {
 	unset status_length
 }
 
-##
+# Example for parse_options() with short arguments only
+# Define it in your main script and modify for your needs.
+#
+#parse_options() {
+#	local result=0
+#
+#	while getopts :vhd-: param; do
+#		[ ${param} = '?' ] && found=${OPTARG} || found=${param}
+#
+#		debug "Found option '$found'"
+#
+#		case ${param} in
+#			v ) print_version; exit 0;;
+#			h ) usage_help; exit 0;;
+#			d ) DEBUG=1;;
+#			- ) case $OPTARG in
+#					version ) print_version; exit 0;;
+#					help    ) usage_help; exit 0;;
+#					debug   ) DEBUG=1;;
+#					*       ) warning "Illegal option --$OPTARG"; result=2;;
+#				esac;;
+#			* ) warning "Illegal option -$OPTARG"; result=2;;
+#		esac
+#	done
+#	shift $((OPTIND-1))
+#
+#	debug "Variable DEBUG: '$DEBUG'"
+#	debug "parse_options() result: $result"
+#
+#	return ${result}
+#}
+
 # Example for parse_options() with long arguments
+# Define it in your main script and modify for your needs.
 #
 #parse_options() {
 #	local result=0
@@ -288,8 +291,8 @@ cleanup() {
 #	return ${result}
 #}
 
-# Function for getting bool values from config
-# Echoes 0|1
+# Function for getting bool values from git config
+# Echoes 1 on success
 get_config_bool() {
 	local value=$(git config --bool $1)
 	local result=0
