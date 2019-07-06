@@ -29,9 +29,9 @@ BOLD="\e[1m"
 CLR="\e[0m"
 DEBUG=
 # this variable should be initialized in main() function
-#status_length=60
+#STATUS_ALIGN=60
 
-BASH_HELPERS_VERSION=0.6.0
+BASH_HELPERS_VERSION=0.7.0
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
@@ -97,14 +97,14 @@ status() {
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" 'OK'
+		printf "[$(format_date)]: %-${STATUS_ALIGN}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" 'FAIL'
+		printf "[$(format_date)]: %-${STATUS_ALIGN}b[$RED%s$CLR]\n" "$1" 'FAIL'
 		result=1
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" 'OK'
+		printf "[$(format_date)]: %-${STATUS_ALIGN}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 -gt 0 ]; then
-		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" 'FAIL'
+		printf "[$(format_date)]: %-${STATUS_ALIGN}b[$RED%s$CLR]\n" "$1" 'FAIL'
 		result=1
 	fi
 
@@ -120,7 +120,7 @@ status_dbg() {
 		return 1
 	fi
 
-	local length=$(( ${status_length} - 7 ))
+	local length=$(( ${STATUS_ALIGN} - 7 ))
 	local result=0
 
 	#debug "status_dbg length: $length"
@@ -139,16 +139,16 @@ status_dbg() {
 	return ${result}
 }
 
-# Function for update status formatting length for longest string in array
+# Update status align up on longest string in array
 # Example:
-#     update_status_length ${strings_array}
-update_status_length() {
+#     update_status_align ${strings_array}
+update_status_align() {
 	for i in ${@}; do
 		debug "Element length: ${#i}"
-		debug "STATUS_LENGTH before check: ${status_length}"
-		if [ ${#i} -gt $(( ${status_length} - 11 )) ]; then
-			status_length=$(( ${status_length} + $(( ${#i} - ${status_length} + 12 ))  ))
-			debug "NEW STATUS_LENGTH: $status_length"
+		debug "STATUS_ALIGN before check: ${STATUS_ALIGN}"
+		if [ ${#i} -gt $(( ${STATUS_ALIGN} - 11 )) ]; then
+			STATUS_ALIGN=$(( ${STATUS_ALIGN} + $(( ${#i} - ${STATUS_ALIGN} + 12 ))  ))
+			debug "NEW STATUS_ALIGN: $STATUS_ALIGN"
 		fi
 
 	done
@@ -220,7 +220,7 @@ helpers_cleanup() {
 
 	unset BASH_HELPERS_VERSION
 	unset DEBUG
-	unset status_length
+	unset STATUS_ALIGN
 }
 
 # Example for parse_options() with short arguments only

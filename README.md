@@ -49,25 +49,25 @@ Collections of useful functions for usage in Bash scripts
 	Example:
 	```bash
 	# Define right statuses position 
-	status_length=30
+	STATUS_ALIGN=30
 	test -d /usr/local/nonexistent
 	status 'Check /usr/local/nonexistent dir' $?
 	test -d /usr/local/bin
 	status 'Check /usr/local/bin dir' $?
 	```
 	![Status messages][Status messages img]
-* Dynamically update statuses position up on longest string in array
+* Dynamically update statuses alignment up on longest string in array
 
 	Example:
 	```bash
 	# Define right statuses position
-	status_length=6
+	STATUS_ALIGN=6
 	declare -a messages
 	messages=(short long\ string string name)
-	update_status_length messages
+	update_status_align messages
 	for i in "${messages[@]}"; do status "$i" OK; done
 	```
-	![Status messages align update][Status messages align update img]
+	![Status messages alignment update][Status messages alignment update img]
 * Checking dependencies.
 
 	Example:
@@ -78,7 +78,7 @@ Collections of useful functions for usage in Bash scripts
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-0.6.0-orange.svg
+[Release img]: https://img.shields.io/badge/release-0.7.0-orange.svg
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
@@ -86,4 +86,7 @@ Collections of useful functions for usage in Bash scripts
 [Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/messages-formatting.jpg
 [Status messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/status-messages.jpg
 [Check dependencies img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/check-dependencies.jpg
-[Status messages align update img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/dynamically-update-status-align.jpg
+[Status messages alignment update img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/dynamically-update-status-alignment.jpg
+
+This software follows *"Semantic Versioning"* specifications.
+Read more on [SemVer.org](http://semver.org).
