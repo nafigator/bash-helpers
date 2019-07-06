@@ -11,7 +11,7 @@ DEBUG=
 # this variable should be initialized in main() function
 #status_length=60
 
-readonly BASH_HELPERS_VERSION='0.3.1'
+BASH_HELPERS_VERSION='0.3.2'
 
 ##
 # This is example of usage_help() function.
@@ -72,21 +72,21 @@ debug() {
 # status 'Run operation' OK
 status() {
 	if [ -z "$1" ] || [ -z "$2" ]; then
-		error "status(): not found required parameters!"
+		error 'status(): not found required parameters!'
 		return 1
 	fi
 
 	local result=0
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" 'FAIL'
 		result=1
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: %-${status_length}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 -gt 0 ]; then
-		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: %-${status_length}b[$RED%s$CLR]\n" "$1" 'FAIL'
 		result=1
 	fi
 
@@ -98,7 +98,7 @@ status_dbg() {
 	[ -z ${DEBUG} ] && return 0
 
 	if [ -z "$1" ] || [ -z "$2" ]; then
-		error "status_dbg(): not found required parameters!"
+		error 'status_dbg(): not found required parameters!'
 		return 1
 	fi
 
@@ -108,13 +108,13 @@ status_dbg() {
 	#debug "status_dbg length: $length"
 
 	if [ $2 = 'OK' ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 = 'FAIL' ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" 'FAIL'
 	elif [ $2 = 0 ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" 'OK'
 	elif [ $2 -gt 0 ]; then
-		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" 'FAIL'
 		result=1
 	fi
 
@@ -197,14 +197,18 @@ float() {
 	return 0
 }
 
-# Unset colors if special variable set
-unset_colors() {
-	RED=
-	GREEN=
-	YELLOW=
-	GRAY=
-	BOLD=
-	CLR=
+# Variables cleanup
+cleanup() {
+	unset RED
+	unset GREEN
+	unset YELLOW
+	unset GRAY
+	unset BOLD
+	unset CLR
+
+	unset BASH_HELPERS_VERSION
+	unset DEBUG
+	unset status_length
 }
 
 ##
