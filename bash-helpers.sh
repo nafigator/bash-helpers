@@ -31,7 +31,7 @@ DEBUG=
 # this variable should be initialized in main() function
 #STATUS_ALIGN=60
 
-BASH_HELPERS_VERSION=0.8.0
+BASH_HELPERS_VERSION=0.8.1
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
