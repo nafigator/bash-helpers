@@ -11,7 +11,7 @@ DEBUG=
 # this variable should be initialized in main() function
 #status_length=60
 
-BASH_HELPERS_VERSION='0.4.0'
+BASH_HELPERS_VERSION=0.5.0
 
 ##
 # This is example of usage_help() function.
@@ -195,6 +195,27 @@ float() {
 	echo $(echo ${1} | sed 's/,/\./' | bc -l)
 
 	return 0
+}
+
+# Include script
+#
+# Example:
+#     include reload # load /usr/local/share/bash/includes/reload.sh
+#     include google/client # load /usr/local/share/bash/includes/google/client.sh
+function include() {
+	local result=0
+	local readonly includes_dir=/usr/local/share/bash/includes
+	local readonly file="$includes_dir/$1.sh"
+
+	if [ -f "$file" ]; then
+		debug "Found file: $file"
+		. "$file"
+		status_dbg "File included" $?
+	else
+		result=1
+	fi
+
+	return ${result}
 }
 
 # Variables cleanup
