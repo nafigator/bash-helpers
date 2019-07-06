@@ -91,6 +91,7 @@
 
 ## Versioning
 This software follows *"Semantic Versioning"* specifications. All function signatures declared as public API.
+
 Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
