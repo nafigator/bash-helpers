@@ -75,6 +75,19 @@ Collections of useful functions for usage in Bash scripts
 	check_dependencies yarn || exit 1
 	```
 	![Check dependencies][Check dependencies img]
+* **Debug messages and statuses.**
+
+	Example:
+	```bash
+	debug 'This message is hidden'
+    status_dbg 'This status is hidden' $?
+    STATUS_ALIGN=45
+    DEBUG=1
+    debug 'Visible because of DEBUG variable'
+    test -d /nonexists
+    status_dbg 'Visible because of DEBUG variable' $?
+	```
+	![Debug messages][Debug messages img]
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
@@ -87,6 +100,7 @@ Collections of useful functions for usage in Bash scripts
 [Status messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/status-messages.jpg
 [Check dependencies img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/check-dependencies.jpg
 [Status messages alignment update img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/dynamically-update-status-alignment.jpg
+[Debug messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/images/debug-messages.jpg
 
 This software follows *"Semantic Versioning"* specifications.
 Read more on [SemVer.org](http://semver.org).
