@@ -10,8 +10,7 @@
     }],
     "support": {
         "issues": "https://github.com/nafigator/bash-helpers/issues",
-        "source": "https://github.com/nafigator/bash-helpers",
-        "email": "alex dot itvault at info"
+        "source": "https://github.com/nafigator/bash-helpers"
     },
     "minimum-stability": "dev",
     "autoload": {
