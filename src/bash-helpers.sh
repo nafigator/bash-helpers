@@ -46,17 +46,17 @@ function clr() {
 }
 
 function bash_helpers_version() {
-	printf '0.9.1'
+	printf '0.9.2'
 }
 
 # Example of version function
+# Define it in your main script and modify for your needs.
 #function version() {
 #	printf '1.0.0'
 #}
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
-#
 #function usage_help() {
 #  printf "$(bold)Usage:$(clr)
 #  example.sh [OPTIONS...]
@@ -73,7 +73,6 @@ function bash_helpers_version() {
 
 # This is example of print_version() function.
 # Define it in your main script and modify for your needs.
-#
 #function print_version() {
 #	printf "example.sh $(bold)${version}$(clr) by Yancharuk Alexander\n"
 #	printf "bash-helpers.sh $(bold)$(bash_helpers_version)$(clr)\n\n"

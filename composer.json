@@ -1,9 +1,9 @@
 {
     "name": "nafigator/bash-helpers",
-    "description": "Bunch of useful Bash functions.",
+    "description": "Collections of useful functions for usage in Bash scripts.",
     "type": "library",
     "license": "MIT",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "authors": [{
         "name": "Yancharuk Alexander",
         "role": "developer"
