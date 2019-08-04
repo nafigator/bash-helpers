@@ -1,0 +1,24 @@
+{
+    "name": "nafigator/bash-helpers",
+    "description": "Bunch of useful Bash functions.",
+    "type": "library",
+    "license": "MIT",
+    "version": "0.9.0",
+    "authors": [{
+        "name": "Yancharuk Alexander",
+        "role": "developer"
+    }],
+    "support": {
+        "issues": "https://github.com/nafigator/bash-helpers/issues",
+        "source": "https://github.com/nafigator/bash-helpers"
+    },
+    "autoload": {
+        "exclude-from-classmap": ["/src/", "/.images/"]
+    },
+    "require": {},
+    "keywords": [
+        "bash",
+        "shell",
+        "scripts"
+    ]
+}
