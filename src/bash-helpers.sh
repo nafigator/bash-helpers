@@ -46,7 +46,7 @@ function clr() {
 }
 
 function bash_helpers_version() {
-	printf '0.9.2'
+	printf '0.9.3'
 }
 
 # Example of version function
