@@ -3,15 +3,17 @@
     "description": "Bunch of useful Bash functions.",
     "type": "library",
     "license": "MIT",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "authors": [{
         "name": "Yancharuk Alexander",
         "role": "developer"
     }],
     "support": {
         "issues": "https://github.com/nafigator/bash-helpers/issues",
-        "source": "https://github.com/nafigator/bash-helpers"
+        "source": "https://github.com/nafigator/bash-helpers",
+        "email": "alex dot itvault at info"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "exclude-from-classmap": ["/src/", "/.images/"]
     },
