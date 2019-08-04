@@ -80,6 +80,14 @@
 	```
 	![Debug messages][Debug messages img]
 
+## Message statuses
+
+	[ OK ] - success status
+	[FAIL] - fail status
+	[ ?? ] - debug message
+	[ ++ ] - success debug status
+	[ -- ] - fail debug status
+
 ## Versioning
 This software follows *"Semantic Versioning"* specifications. All function signatures declared as public API.
 
