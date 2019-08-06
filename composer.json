@@ -3,7 +3,7 @@
     "description": "Collections of useful functions for usage in Bash scripts.",
     "type": "library",
     "license": "MIT",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "authors": [{
         "name": "Yancharuk Alexander",
         "role": "developer"
@@ -15,6 +15,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "exclude-from-classmap": ["/src/", "/.images/"]
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
     },
     "require": {},
     "keywords": [
