@@ -46,7 +46,7 @@ function clr() {
 }
 
 function bash_helpers_version() {
-	printf '0.9.4'
+	printf '0.10.0'
 }
 
 # Example of version function
@@ -217,37 +217,37 @@ function include() {
 	return ${result}
 }
 
-# Define it in your main script and modify for your needs.
+# Redefine it in your main script and modify for your needs.
 # Usage:
 #	parse_options $@
-#function parse_options() {
-#	local result=0
-#
-#	while getopts :vhd-: param; do
-#		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
-#
-#		debug "Found option '$found'"
-#
-#		case ${param} in
-#			v ) print_version; exit 0;;
-#			h ) usage_help; exit 0;;
-#			d ) DEBUG=1;;
-#			- ) case $OPTARG in
-#					version ) print_version; exit 0;;
-#					help    ) usage_help; exit 0;;
-#					debug   ) DEBUG=1;;
-#					*       ) warning "Illegal option --$OPTARG"; result=2;;
-#				esac;;
-#			* ) warning "Illegal option -$OPTARG"; result=2;;
-#		esac
-#	done
-#	shift $((OPTIND-1))
-#
-#	debug "Variable DEBUG: '$DEBUG'"
-#	debug "parse_options() result: $result"
-#
-#	return ${result}
-#}
+function parse_options() {
+	local result=0
+
+	while getopts :vhd-: param; do
+		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
+
+		debug "Found option '$found'"
+
+		case ${param} in
+			v ) print_version; exit 0;;
+			h ) usage_help; exit 0;;
+			d ) DEBUG=1;;
+			- ) case $OPTARG in
+					version ) print_version; exit 0;;
+					help    ) usage_help; exit 0;;
+					debug   ) DEBUG=1;;
+					*       ) warning "Illegal option --$OPTARG"; result=2;;
+				esac;;
+			* ) warning "Illegal option -$OPTARG"; result=2;;
+		esac
+	done
+	shift $((OPTIND-1))
+
+	debug "Variable DEBUG: '$DEBUG'"
+	debug "parse_options() result: $result"
+
+	return ${result}
+}
 
 # Function for getting bool values from git config
 # Echoes 1 on success
