@@ -46,7 +46,7 @@ function clr() {
 }
 
 function bash_helpers_version() {
-	printf '0.10.1'
+	printf '0.10.2'
 }
 
 # Example of version function
@@ -85,7 +85,7 @@ function format_date() {
 
 # Function for error messages
 function error() {
-	printf "[$(format_date)]: $(red)ERROR:$(clr) $1\n" >&2
+	printf "[$(format_date)]:$(red)ERROR:$(clr) $1\n" >&2
 }
 
 # Function for informational messages
