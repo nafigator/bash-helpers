@@ -22,48 +22,36 @@
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 function red() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-    printf "\e[31m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[31m"
 }
 
 function green() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-	printf "\e[32m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[32m"
 }
 
 function yellow() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-	printf "\e[33m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[33m"
 }
 
 function gray() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-	printf "\e[38;5;242m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[38;5;242m"
 }
 
 function bold() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-	printf "\e[1m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[1m"
 }
 
 function clr() {
-	[[ -z ${INTERACTIVE} ]] && exit
-
-	printf "\e[0m"
+	[[ -z ${INTERACTIVE} ]] || printf "\e[0m"
 }
 
-INTERACTIVE=$([[ -t 0 ]] && printf 1)
+INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
 DEBUG=
 
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.12.0
+BASH_HELPERS_VERSION=0.12.1
 
 # Example of version function
 # Define it in your main script and modify for your needs.
