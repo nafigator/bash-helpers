@@ -51,7 +51,7 @@ DEBUG=
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.12.1
+BASH_HELPERS_VERSION=0.13.0
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -255,8 +255,16 @@ function parse_options() {
 
 # Function for getting bool values from git config
 # Echoes 1 on success
-function get_config_bool() {
-	local value=$(git config --bool $1)
+# Usage:
+#	git_config_bool $PARAM $PROJECT_PATH
+function git_config_bool() {
+	local path=
+
+	if [[ -n $2 ]]; then
+		path="-C $2"
+	fi
+
+	local value=$(git ${path} config --bool $1)
 	local result=0
 
 	if [[ ${value} == true ]]; then

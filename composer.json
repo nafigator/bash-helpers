@@ -3,7 +3,7 @@
     "description": "Collections of useful functions for usage in Bash scripts.",
     "type": "library",
     "license": "MIT",
-    "version": "0.12.1",
+    "version": "0.13.0",
     "authors": [{
         "name": "Yancharuk Alexander",
         "role": "developer"
