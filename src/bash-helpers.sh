@@ -21,18 +21,49 @@
 #SOFTWARE.
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-GRAY="\e[38;5;242m"
-BOLD="\e[1m"
-CLR="\e[0m"
+function red() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+    printf "\e[31m"
+}
+
+function green() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+	printf "\e[32m"
+}
+
+function yellow() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+	printf "\e[33m"
+}
+
+function gray() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+	printf "\e[38;5;242m"
+}
+
+function bold() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+	printf "\e[1m"
+}
+
+function clr() {
+	[[ -z ${INTERACTIVE} ]] && exit
+
+	printf "\e[0m"
+}
+
+INTERACTIVE=$([[ -t 0 ]] && printf 1)
 DEBUG=
 
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.11.0
+BASH_HELPERS_VERSION=0.12.0
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -43,10 +74,10 @@ BASH_HELPERS_VERSION=0.11.0
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.
 #function usage_help() {
-#  printf "${BOLD}Usage:${CLR}
+#  printf "$(bold)Usage:$(clr)
 #  example.sh [OPTIONS...]
 #
-#${BOLD}Options:${CLR}
+#$(bold)Options:$(clr)
 #  -v, --version              Show script version
 #  -h, --help                 Show this help message
 #  -d, --debug                Run program in debug mode
@@ -59,33 +90,33 @@ BASH_HELPERS_VERSION=0.11.0
 # This is example of print_version() function.
 # Define it in your main script and modify for your needs.
 #function print_version() {
-#	printf "example.sh ${BOLD}${VERSION}${CLR} by Yancharuk Alexander\n"
-#	printf "bash-helpers.sh ${BOLD}${BASH_HELPERS_VERSION}${CLR}\n\n"
+#	printf "example.sh $(bold)${VERSION}$(clr) by Yancharuk Alexander\n"
+#	printf "bash-helpers.sh $(bold)${BASH_HELPERS_VERSION}$(clr)\n\n"
 #}
 
 # Function for datetime output
 function format_date() {
-	printf "${GRAY}$(date +%Y-%m-%d\ %H:%M:%S)${CLR}"
+	printf "$(gray)$(date +%Y-%m-%d\ %H:%M:%S)$(clr)"
 }
 
 # Function for error messages
 function error() {
-	printf "[$(format_date)]:${RED}ERROR:${CLR} $1\n" >&2
+	printf "[$(format_date)]:$(red)ERROR:$(clr) $1\n" >&2
 }
 
 # Function for informational messages
 function inform() {
-	printf "[$(format_date)]:[${GREEN}INFO${CLR}] $1\n"
+	printf "[$(format_date)]:[$(green)INFO$(clr)] $1\n"
 }
 
 # Function for warning messages
 function warning() {
-	printf "[$(format_date)]:${YELLOW}WARNING:${CLR} $1\n" >&2
+	printf "[$(format_date)]:$(yellow)WARNING:$(clr) $1\n" >&2
 }
 
 # Function for debug messages
 function debug() {
-	[[ -z ${DEBUG} ]] || printf "[$(format_date)]:[${GREEN} ?? ${CLR}] $1\n"
+	[[ -z ${DEBUG} ]] || printf "[$(format_date)]:[$(green) ?? $(clr)] $1\n"
 }
 
 # Function for operation status
@@ -102,8 +133,8 @@ function status() {
 	fi
 
 	local result=0
-	local readonly success="[$(format_date)]:[${GREEN}%s${CLR}] "
-	local readonly error="[$(format_date)]:[${RED}%s${CLR}] "
+	local readonly success="[$(format_date)]:[$(green)%s$(clr)] "
+	local readonly error="[$(format_date)]:[$(red)%s$(clr)] "
 
 	if [[ $2 = OK ]]; then
 		printf "$success%b\n" ' OK ' "$1"
@@ -130,8 +161,8 @@ function status_dbg() {
 	fi
 
 	local result=0
-	local readonly success="[$(format_date)]:[${GREEN}%s${CLR}] "
-	local readonly error="[$(format_date)]:[${RED}%s${CLR}] "
+	local readonly success="[$(format_date)]:[$(green)%s$(clr)] "
+	local readonly error="[$(format_date)]:[$(red)%s$(clr)] "
 
 	if [[ $2 = OK ]]; then
 		printf "$success%b\n" ' ++ ' "$1"
