@@ -9,7 +9,7 @@
 
 ## Composer installation
 
-	composer require nafigator/bash-helpers ^0.9
+	composer require nafigator/bash-helpers
 
 ## Usage
 1. Put bash libs into `/usr/local/lib/bash/includes` dir.
@@ -19,18 +19,26 @@
 	```
 ## Features:
 * **Defines human-readable functions for colors and formatting:**
+	- black()
 	- red()
 	- green()
 	- yellow()
+	- blue()
+	- magenta()
+	- cyan()
+	- white()
 	- gray()
 	- bold()
 	- clr()
-	
+
 	Examples:
 	```bash
-	printf "$(red)ERROR:$(clr) Save failure"
+	printf "$(bold)$(red)ERROR:$(clr) Save $(cyan)failure$(clr)"
 	```
 	![Colors definition][Colors definition img]
+	> NOTE: For logging purpose colors may be disabled by global `INTERACTIVE` variable:
+    
+        INTERACTIVE=
 * **Functions for nicely formatted messages `error`, `inform`, `warning`.**
 
 	Examples:
@@ -62,7 +70,7 @@
 
 	Example:
 	```bash
-	check_dependencies yarn || exit 1
+	check_dependencies yarn rust || exit 1
 	```
 	![Check dependencies][Check dependencies img]
 * **Debug messages and statuses.**
@@ -95,7 +103,7 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-0.13.0-orange.svg
+[Release img]: https://img.shields.io/badge/release-0.14.0-orange.svg
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license

@@ -21,6 +21,10 @@
 #SOFTWARE.
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
+function black() {
+	[[ -z ${INTERACTIVE} ]] || printf "\e[30m"
+}
+
 function red() {
 	[[ -z ${INTERACTIVE} ]] || printf "\e[31m"
 }
@@ -31,6 +35,22 @@ function green() {
 
 function yellow() {
 	[[ -z ${INTERACTIVE} ]] || printf "\e[33m"
+}
+
+function blue() {
+	[[ -z ${INTERACTIVE} ]] || printf "\e[34m"
+}
+
+function magenta() {
+	[[ -z ${INTERACTIVE} ]] || printf "\e[35m"
+}
+
+function cyan() {
+	[[ -z ${INTERACTIVE} ]] || printf "\e[36m"
+}
+
+function white() {
+	[[ -z ${INTERACTIVE} ]] || printf "\e[37m"
 }
 
 function gray() {
@@ -51,7 +71,7 @@ DEBUG=
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.13.0
+BASH_HELPERS_VERSION=0.14.0
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -104,7 +124,7 @@ function warning() {
 
 # Function for debug messages
 function debug() {
-	[[ -z ${DEBUG} ]] || printf "[$(format_date)]:[$(green) ?? $(clr)] $1\n"
+	[[ -z ${DEBUG} ]] || printf "[$(format_date)]:[$(gray) ?? $(clr)] $1\n"
 }
 
 # Function for operation status
@@ -171,14 +191,14 @@ function check_dependencies() {
 	local result=0
 	local cmd_status
 
-	for i in ${@}; do
-		command -v ${i} >/dev/null 2>&1
+	for cmd in ${@}; do
+		command -v ${cmd} >/dev/null 2>&1
 		cmd_status=$?
 
-		status_dbg "DEPENDENCY: $i" ${cmd_status}
+		status_dbg "DEPENDENCY: $cmd" ${cmd_status}
 
 		if [[ ${cmd_status} -ne 0 ]]; then
-			warning "$i command not available"
+			warning "$(bold)$(blue)$cmd$(clr) command not available"
 			result=1
 		fi
 	done
@@ -259,13 +279,13 @@ function parse_options() {
 #	git_config_bool $PARAM $PROJECT_PATH
 function git_config_bool() {
 	local path=
+	local result=0
 
 	if [[ -n $2 ]]; then
 		path="-C $2"
 	fi
 
 	local value=$(git ${path} config --bool $1)
-	local result=0
 
 	if [[ ${value} == true ]]; then
 		echo 1
