@@ -256,7 +256,8 @@ function parse_options() {
 			v ) print_version; exit 0;;
 			h ) usage_help; exit 0;;
 			d ) DEBUG=1;;
-			- ) case $OPTARG in
+			- ) local value="${OPTARG#*=}"
+			    case $OPTARG in
 					version ) print_version; exit 0;;
 					help    ) usage_help; exit 0;;
 					debug   ) DEBUG=1;;
