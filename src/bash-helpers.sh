@@ -71,7 +71,7 @@ DEBUG=
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.14.0
+BASH_HELPERS_VERSION=0.15.1
 
 # Example of version function
 # Define it in your main script and modify for your needs.
