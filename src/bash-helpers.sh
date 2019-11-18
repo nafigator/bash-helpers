@@ -71,7 +71,7 @@ DEBUG=
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.15.1
+BASH_HELPERS_VERSION=0.15.2
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -244,6 +244,18 @@ function include() {
 # Redefine it in your main script and modify for your needs.
 # Usage:
 #	parse_options $@
+#
+# Long arguments (--target=value) example:
+#	case ${param} in
+#		t ) TARGET=${OPTARG};;
+#		- ) local value="${OPTARG#*=}"
+#				case $OPTARG in
+#					target=*  ) TARGET=${value};;
+#					target    ) error "No arg for --$OPTARG option"; result=2;;
+#					*         ) warning "Illegal option --$OPTARG"; result=2;;
+#				esac;;
+#		* ) warning "Illegal option -$OPTARG"; result=2;;
+#	esac
 function parse_options() {
 	local result=0
 
@@ -257,7 +269,7 @@ function parse_options() {
 			h ) usage_help; exit 0;;
 			d ) DEBUG=1;;
 			- ) local value="${OPTARG#*=}"
-			    case $OPTARG in
+				case $OPTARG in
 					version ) print_version; exit 0;;
 					help    ) usage_help; exit 0;;
 					debug   ) DEBUG=1;;
