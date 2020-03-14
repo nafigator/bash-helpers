@@ -71,7 +71,7 @@ DEBUG=
 # This is variable should be redefined
 VERSION=
 
-BASH_HELPERS_VERSION=0.15.3
+BASH_HELPERS_VERSION=0.16.0
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -243,7 +243,13 @@ function include() {
 
 # Redefine it in your main script and modify for your needs.
 # Usage:
-#	parse_options $@
+#	parse_options ${@}
+#	PARSE_RESULT=$?
+#
+#	shift $((OPTIND-1))
+#
+#	[[ ${PARSE_RESULT} = 1 ]] && exit 1
+#	[[ ${PARSE_RESULT} = 2 ]] && usage_help && exit 2
 #
 # Long arguments (--target=value) example:
 #	case ${param} in
@@ -258,6 +264,7 @@ function include() {
 #	esac
 function parse_options() {
 	local result=0
+	OPTIND=1
 
 	while getopts :vhd-: param; do
 		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
@@ -278,7 +285,6 @@ function parse_options() {
 			* ) warning "Illegal option -$OPTARG"; result=2;;
 		esac
 	done
-	shift $((OPTIND-1))
 
 	debug "Variable DEBUG: '$DEBUG'"
 	debug "parse_options() result: $result"
