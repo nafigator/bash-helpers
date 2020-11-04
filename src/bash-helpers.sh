@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=0.16.1
+BASH_HELPERS_VERSION=0.16.3
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
 DEBUG=
