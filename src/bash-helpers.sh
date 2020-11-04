@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Copyright (c) 2017-2019 Yancharuk Alexander
+#Copyright (c) 2017-2020 Yancharuk Alexander
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +19,12 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
+
+# shellcheck disable=SC2034
+BASH_HELPERS_VERSION=0.16.1
+
+INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
+DEBUG=
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 function black() {
@@ -65,13 +71,8 @@ function clr() {
 	[[ -z ${INTERACTIVE} ]] || printf "\e[0m"
 }
 
-INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
-DEBUG=
-
 # This is variable should be redefined
 VERSION=
-
-BASH_HELPERS_VERSION=0.16.0
 
 # Example of version function
 # Define it in your main script and modify for your needs.
@@ -104,27 +105,27 @@ BASH_HELPERS_VERSION=0.16.0
 
 # Function for datetime output
 function format_date() {
-	printf "$(gray)$(date +%Y-%m-%d\ %H:%M:%S)$(clr)"
+	printf "%s%s%s" "$(gray)" "$(date +%Y-%m-%d\ %H:%M:%S)" "$(clr)"
 }
 
 # Function for error messages
 function error() {
-	printf "[$(format_date)]:$(red)ERROR:$(clr) $1\n" >&2
+	printf "[%s]:[%sERROR%s] $1\n" "$(format_date)" "$(red)" "$(clr)" >&2
 }
 
 # Function for informational messages
 function inform() {
-	printf "[$(format_date)]:[$(green)INFO$(clr)] $1\n"
+	printf "[%s]:[%sINFO%s] $1\n" "$(format_date)" "$(green)" "$(clr)"
 }
 
 # Function for warning messages
 function warning() {
-	printf "[$(format_date)]:$(yellow)WARNING:$(clr) $1\n" >&2
+	printf "[%s]:[%sWARN%s] $1\n" "$(format_date)" "$(yellow)" "$(clr)" >&2
 }
 
 # Function for debug messages
 function debug() {
-	[[ -z ${DEBUG} ]] || printf "[$(format_date)]:[$(gray) ?? $(clr)] $1\n"
+	[ -z $DEBUG ] || printf "[%s]:[%s ?? %s] $1\n" "$(format_date)" "$(gray)" "$(clr)"
 }
 
 # Function for operation status
@@ -141,18 +142,20 @@ function status() {
 	fi
 
 	local result=0
-	local readonly success="[$(format_date)]:[$(green)%s$(clr)] "
-	local readonly error="[$(format_date)]:[$(red)%s$(clr)] "
+	# shellcheck disable=SC2155
+	local -r ok_msg="[$(format_date)]:[$(green)%s$(clr)] "
+	# shellcheck disable=SC2155
+	local -r err_msg="[$(format_date)]:[$(red)%s$(clr)] "
 
 	if [[ $2 = OK ]]; then
-		printf "$success%b\n" ' OK ' "$1"
+		printf "$ok_msg%b\n" ' OK ' "$1"
 	elif [[ $2 = FAIL ]]; then
-		printf "$error%b\n" FAIL "$1"
+		printf "$err_msg%b\n" FAIL "$1"
 		result=1
 	elif [[ $2 = 0 ]]; then
-		printf "$success%b\n" ' OK ' "$1"
+		printf "$ok_msg%b\n" ' OK ' "$1"
 	elif [[ $2 -gt 0 ]]; then
-		printf "$error%b\n" FAIL "$1"
+		printf "$err_msg%b\n" FAIL "$1"
 		result=1
 	fi
 
@@ -161,7 +164,7 @@ function status() {
 
 # Function for status on some command in debug mode only
 function status_dbg() {
-	[[ -z ${DEBUG} ]] && return 0
+	[ -z $DEBUG ] && return 0
 
 	if [[ -z $1 ]] || [[ -z $2 ]]; then
 		error 'status_dbg(): not found required parameters!'
@@ -169,17 +172,19 @@ function status_dbg() {
 	fi
 
 	local result=0
-	local readonly success="[$(format_date)]:[$(green)%s$(clr)] "
-	local readonly error="[$(format_date)]:[$(red)%s$(clr)] "
+	# shellcheck disable=SC2155
+	local -r ok_msg="[$(format_date)]:[$(green)%s$(clr)] "
+	# shellcheck disable=SC2155
+	local -r err_msg="[$(format_date)]:[$(red)%s$(clr)] "
 
 	if [[ $2 = OK ]]; then
-		printf "$success%b\n" ' ++ ' "$1"
+		printf "$ok_msg%b\n" ' ++ ' "$1"
 	elif [[ $2 = FAIL ]]; then
-		printf "$error%b\n" ' -- ' "$1"
+		printf "$err_msg%b\n" ' -- ' "$1"
 	elif [[ $2 = 0 ]]; then
-		printf "$success%b\n" ' ++ ' "$1"
+		printf "$ok_msg%b\n" ' ++ ' "$1"
 	elif [[ $2 -gt 0 ]]; then
-		printf "$error%b\n" ' -- ' "$1"
+		printf "$err_msg%b\n" ' -- ' "$1"
 		result=1
 	fi
 
@@ -189,15 +194,15 @@ function status_dbg() {
 # Function for checking script dependencies
 function check_dependencies() {
 	local result=0
-	local cmd_status
+	local code
 
-	for cmd in ${@}; do
-		command -v ${cmd} >/dev/null 2>&1
-		cmd_status=$?
+	for cmd in "${@}"; do
+		command -v "$cmd" >/dev/null 2>&1
+		code=$?
 
-		status_dbg "DEPENDENCY: $cmd" ${cmd_status}
+		status_dbg "DEPENDENCY: $cmd" ${code}
 
-		if [[ ${cmd_status} -ne 0 ]]; then
+		if [[ ${code} -ne 0 ]]; then
 			warning "$(bold)$(blue)$cmd$(clr) command not available"
 			result=1
 		fi
@@ -210,12 +215,12 @@ function check_dependencies() {
 
 # Convert string value to float
 function float() {
-	if [[ $1 = '""' ]] || [[ -z $1 ]]; then
+	if [ "$1" = '""' ] || [ -z "$1" ]; then
 		echo 0
 		return 0
 	fi
 
-	echo $(echo $1 | sed 's/,/\./' | bc -l)
+	echo "$1" | sed 's/,/\./' | bc -l
 
 	return 0
 }
@@ -227,11 +232,12 @@ function float() {
 #     include google/client # load /usr/local/lib/bash/includes/google/client.sh
 function include() {
 	local result=0
-	local readonly includes_dir=/usr/local/lib/bash/includes
-	local readonly file="$includes_dir/$1.sh"
+	local -r includes_dir=/usr/local/lib/bash/includes
+	local -r file="$includes_dir/$1.sh"
 
 	if [[ -f "$file" ]]; then
 		debug "Found file: $file"
+		# shellcheck source=stub.sh
 		. "$file"
 		status_dbg "File included" $?
 	else
@@ -293,18 +299,19 @@ function parse_options() {
 }
 
 # Function for getting bool values from git config
-# Echoes 1 on success
+# Echoes 1 on ok_msg
 # Usage:
 #	git_config_bool $PARAM $PROJECT_PATH
 function git_config_bool() {
 	local path=
 	local result=0
+	local value
 
 	if [[ -n $2 ]]; then
 		path="-C $2"
 	fi
 
-	local value=$(git ${path} config --bool $1)
+	value=$(git "$path" config --bool "$1")
 
 	if [[ ${value} == true ]]; then
 		echo 1
