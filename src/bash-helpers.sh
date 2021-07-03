@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.0
+BASH_HELPERS_VERSION=1.0.1
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
 DEBUG=
@@ -73,12 +73,6 @@ function clr() {
 
 # This is variable should be redefined
 VERSION=
-
-# Example of version function
-# Define it in your main script and modify for your needs.
-#function version() {
-#	printf '1.0.0'
-#}
 
 # This is example of usage_help() function.
 # Define it in your main script and modify for your needs.

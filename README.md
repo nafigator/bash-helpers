@@ -6,6 +6,7 @@
 
 	[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
 	sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+	sudo +x /usr/local/lib/bash/includes/bash-helpers.sh
 
 ## Composer installation
 
@@ -103,7 +104,7 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-1.0.0-orange.svg
+[Release img]: https://img.shields.io/badge/release-1.0.1-orange.svg
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
