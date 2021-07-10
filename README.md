@@ -8,6 +8,31 @@
 	sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
 	sudo +x /usr/local/lib/bash/includes/bash-helpers.sh
 
+#### Install functions examples
+
+	download_bash_helpers() {
+		printf "Installing bash-helpers\n"
+		if [[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
+
+		sudo curl -so /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+		sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
+
+		return 0
+	}
+
+	init_bash_helpers() {
+		[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] || download_bash_helpers
+
+		if [[ ! -x /usr/local/lib/bash/includes/bash-helpers.sh ]]; then
+			printf "Insufficient permissions for bash-helpers execute\n"; exit
+		fi
+
+		. /usr/local/lib/bash/includes/bash-helpers.sh
+
+		return 0
+	}
+
+
 ## Composer installation
 
 	composer require nafigator/bash-helpers
