@@ -10,6 +10,8 @@
 
 #### Install functions examples
 
+	#!/usr/bin/env bash
+
 	download_bash_helpers() {
 		printf "Installing bash-helpers\n"
 		if [[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
@@ -31,6 +33,8 @@
 
 		return 0
 	}
+
+	init_bash_helpers
 
 
 ## Composer installation
