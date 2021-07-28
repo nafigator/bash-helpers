@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.1
+BASH_HELPERS_VERSION=1.0.2
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
 DEBUG=
@@ -157,6 +157,10 @@ function status() {
 }
 
 # Function for status on some command in debug mode only
+# Examples:
+#     status_dbg 'Debug operation status' $?
+#     status_dbg 'Debug operation status' OK
+#     status_dbg 'Debug operation status' FAIL
 function status_dbg() {
 	[ -z $DEBUG ] && return 0
 
@@ -246,8 +250,6 @@ function include() {
 #	parse_options ${@}
 #	PARSE_RESULT=$?
 #
-#	shift $((OPTIND-1))
-#
 #	[[ ${PARSE_RESULT} = 1 ]] && exit 1
 #	[[ ${PARSE_RESULT} = 2 ]] && usage_help && exit 2
 #
@@ -266,7 +268,7 @@ function parse_options() {
 	local result=0
 	OPTIND=1
 
-	while getopts :vhd-: param; do
+	while getopts vhd-: param; do
 		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
 
 		debug "Found option '$found'"
@@ -285,6 +287,8 @@ function parse_options() {
 			* ) warning "Illegal option -$OPTARG"; result=2;;
 		esac
 	done
+
+	shift $((OPTIND-1)) # remove parsed options and args from $@ list
 
 	debug "Variable DEBUG: '$DEBUG'"
 	debug "parse_options() result: $result"
