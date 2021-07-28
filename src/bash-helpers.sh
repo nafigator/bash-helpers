@@ -254,16 +254,27 @@ function include() {
 #	[[ ${PARSE_RESULT} = 2 ]] && usage_help && exit 2
 #
 # Long arguments (--target=value) example:
-#	case ${param} in
-#		t ) TARGET=${OPTARG};;
-#		- ) local value="${OPTARG#*=}"
+#	while getopts vhdt:-: param; do
+#		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
+#
+#		debug "Found option '$found'"
+#
+#		case ${param} in
+#			v ) print_version; exit 0;;
+#			h ) usage_help; exit 0;;
+#			d ) DEBUG=1;;
+#			t ) TARGET=${OPTARG};;
+#			- ) local value="${OPTARG#*=}"
 #				case $OPTARG in
-#					target=*  ) TARGET=${value};;
-#					target    ) error "No arg for --$OPTARG option"; result=2;;
-#					*         ) warning "Illegal option --$OPTARG"; result=2;;
+#					version ) print_version; exit 0;;
+#					help    ) usage_help; exit 0;;
+#					debug   ) DEBUG=1;;
+#					target  ) TARGET=${value};;
+#					*       ) warning "Illegal option --$OPTARG"; result=2;;
 #				esac;;
-#		* ) warning "Illegal option -$OPTARG"; result=2;;
-#	esac
+#			* ) warning "Illegal option -$OPTARG"; result=2;;
+#		esac
+#	done
 function parse_options() {
 	local result=0
 	OPTIND=1
