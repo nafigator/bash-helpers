@@ -26,7 +26,7 @@
 		[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] || download_bash_helpers
 
 		if [[ ! -x /usr/local/lib/bash/includes/bash-helpers.sh ]]; then
-			printf "Insufficient permissions for bash-helpers execute\n"; exit
+			printf "Insufficient permissions for bash-helpers execute\n"; return 1
 		fi
 
 		. /usr/local/lib/bash/includes/bash-helpers.sh
@@ -34,7 +34,7 @@
 		return 0
 	}
 
-	init_bash_helpers
+	init_bash_helpers || exit 1
 
 
 ## Composer installation
