@@ -119,7 +119,7 @@ function warning() {
 
 # Function for debug messages
 function debug() {
-	[ -z $DEBUG ] || printf "[%s]:[%s ?? %s] $1\n" "$(format_date)" "$(gray)" "$(clr)"
+	[ -z "$DEBUG" ] || printf "[%s]:[%s ?? %s] $1\n" "$(format_date)" "$(gray)" "$(clr)"
 }
 
 # Function for operation status
@@ -162,7 +162,7 @@ function status() {
 #     status_dbg 'Debug operation status' OK
 #     status_dbg 'Debug operation status' FAIL
 function status_dbg() {
-	[ -z $DEBUG ] && return 0
+	[ -z "$DEBUG" ] && return 0
 
 	if [[ -z $1 ]] || [[ -z $2 ]]; then
 		error 'status_dbg(): not found required parameters!'
@@ -320,7 +320,7 @@ function git_config_bool() {
 		path="-C $2"
 	fi
 
-	value=$(git $path config --bool "$1")
+	value=$(git "$path" config --bool "$1")
 
 	if [[ ${value} == true ]]; then
 		echo 1
