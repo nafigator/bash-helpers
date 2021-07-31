@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.6
+BASH_HELPERS_VERSION=1.0.7
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
@@ -320,7 +320,9 @@ function git_config_bool() {
 		path="-C $2"
 	fi
 
-	value=$(git "$path" config --bool "$1")
+	# Do not quote $path variable because git will get exactly "-C /path/to/cfg" parameter
+	# shellcheck disable=SC2086
+	value=$(git $path config --bool "$1")
 
 	if [[ ${value} == true ]]; then
 		echo 1
