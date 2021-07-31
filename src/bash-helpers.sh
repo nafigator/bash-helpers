@@ -21,9 +21,9 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.2
+readonly BASH_HELPERS_VERSION=1.0.2
 
-INTERACTIVE=$([[ -t 0 && -t 1 ]] && printf 1)
+INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
