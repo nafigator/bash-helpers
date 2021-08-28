@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.8
+BASH_HELPERS_VERSION=1.1.0
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
@@ -74,28 +74,31 @@ function clr() {
 # This is variable should be redefined
 VERSION=
 
-# This is example of usage_help() function.
-# Define it in your main script and modify for your needs.
-#function usage_help() {
-#  printf "$(bold)Usage:$(clr)
-#  example.sh [OPTIONS...]
-#
-#$(bold)Options:$(clr)
-#  -v, --version              Show script version
-#  -h, --help                 Show this help message
-#  -d, --debug                Run program in debug mode
-#
-#"
-#
-#	return 0
-#}
+# Function for handling help flags.
+# If needed redefine and modify for your needs.
+function usage_help() {
+	# shellcheck disable=SC2059
+  printf "$(bold)Usage:$(clr)
+  $(basename "$(readlink -f "$0")") [OPTIONS...]
 
-# This is example of print_version() function.
-# Define it in your main script and modify for your needs.
-#function print_version() {
-#	printf "example.sh $(bold)${VERSION}$(clr) by Yancharuk Alexander\n"
-#	printf "bash-helpers.sh $(bold)${BASH_HELPERS_VERSION}$(clr)\n\n"
-#}
+$(bold)Options:$(clr)
+  -v, --version              Show script version
+  -h, --help                 Show this help message
+  -d, --debug                Run program in debug mode
+
+"
+
+	return 0
+}
+
+# Function for handling version flags.
+# If needed redefine and modify for your needs.
+function print_version() {
+	# shellcheck disable=SC2059
+	printf "$(basename "$(readlink -f "$0")") $(bold)${VERSION}$(clr)"
+	# shellcheck disable=SC2059
+	printf "bash-helpers.sh $(bold)${BASH_HELPERS_VERSION}$(clr)\n\n"
+}
 
 # Function for datetime output
 function format_date() {
