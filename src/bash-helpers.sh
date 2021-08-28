@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.1.0
+BASH_HELPERS_VERSION=1.1.1
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
@@ -95,7 +95,7 @@ $(bold)Options:$(clr)
 # If needed redefine and modify for your needs.
 function print_version() {
 	# shellcheck disable=SC2059
-	printf "$(basename "$(readlink -f "$0")") $(bold)${VERSION}$(clr)"
+	printf "$(basename "$(readlink -f "$0")") $(bold)${VERSION}$(clr)\n"
 	# shellcheck disable=SC2059
 	printf "bash-helpers.sh $(bold)${BASH_HELPERS_VERSION}$(clr)\n\n"
 }
