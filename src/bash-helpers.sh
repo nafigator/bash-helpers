@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.0.7
+BASH_HELPERS_VERSION=1.0.8
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
@@ -254,7 +254,7 @@ function include() {
 #	[[ ${PARSE_RESULT} = 2 ]] && usage_help && exit 2
 #
 # Long arguments (--target=value) example:
-#	while getopts vhdt:-: param; do
+#	while getopts :vhdt:-: param; do
 #		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
 #
 #		debug "Found option '$found'"
@@ -279,7 +279,7 @@ function parse_options() {
 	local result=0
 	OPTIND=1
 
-	while getopts vhd-: param; do
+	while getopts :vhd-: param; do
 		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
 
 		debug "Found option '$found'"
