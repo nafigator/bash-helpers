@@ -71,8 +71,8 @@ function clr() {
 	[[ -z ${INTERACTIVE} ]] || printf "\e[0m"
 }
 
-# This is variable should be redefined
-VERSION=
+# This is variable should be defined in your main script
+#VERSION=1.0.0
 
 # Function for handling help flags.
 # If needed redefine and modify for your needs.
