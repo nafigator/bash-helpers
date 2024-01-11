@@ -14,7 +14,7 @@
 
 	download_bash_helpers() {
 		printf "Installing bash-helpers\n"
-		if [[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
+		[[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
 
 		sudo curl -so /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
 		sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
