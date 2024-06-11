@@ -2,7 +2,22 @@
 # bash-helpers
 **Collection of useful functions for usage in Bash scripts**
 
-## Installation
+## Usage
+
+#### Without installation
+
+	#!/usr/bin/env bash
+
+	source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.1/src/bash-helpers.sh)
+	
+#### With installation
+1. Put bash libs into `/usr/local/lib/bash/includes` dir.
+2. Source `bash-helpers.sh` in executable script:
+	```bash
+	. /usr/local/lib/bash/includes/bash-helpers.sh
+	```
+
+## Installation (optional)
 
 	[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
 	sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
@@ -41,12 +56,6 @@
 
 	composer require nafigator/bash-helpers
 
-## Usage
-1. Put bash libs into `/usr/local/lib/bash/includes` dir.
-2. Source `bash-helpers.sh` in executable script:
-	```bash
-	. /usr/local/lib/bash/includes/bash-helpers.sh
-	```
 ## Features:
 * **Defines human-readable functions for colors and formatting:**
 	- black()
@@ -66,9 +75,9 @@
 	printf "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
 	```
 	![Colors definition][Colors definition img]
-	> NOTE: For logging purpose colors may be disabled by global `INTERACTIVE` variable:
-    
-        INTERACTIVE=
+	> **NOTE**: For logging purpose colors may be disabled by global `INTERACTIVE` variable:
+	>
+	>INTERACTIVE=
 * **Functions for nicely formatted messages `error`, `inform`, `warning`.**
 
 	Examples:
@@ -133,7 +142,7 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-1.1.1-orange.svg
+[Release img]: https://img.shields.io/badge/release-1.1.2-orange.svg
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [License src]: https://tldrlegal.com/license/mit-license
