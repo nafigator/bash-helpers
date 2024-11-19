@@ -142,11 +142,11 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
-[Release img]: https://img.shields.io/badge/release-1.1.2-orange.svg
+[Release img]: https://img.shields.io/github/v/tag/nafigator/bash-helpers?logo=github&labelColor=333&color=teal
 [Release src]: https://github.com/nafigator/bash-helpers
-[License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+[License img]: https://img.shields.io/github/license/nafigator/bash-helpers?logoColor=333&color=teal
 [License src]: https://tldrlegal.com/license/mit-license
-[Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-brightgreen.svg
+[Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-teal.svg
 [Versioning src]: https://semver.org
 [Colors definition img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/colors-definition.jpg
 [Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/messages-formatting.jpg
