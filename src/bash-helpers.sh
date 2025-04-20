@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Copyright (c) 2017-2024 Yancharuk Alexander
+#Copyright (c) 2017-2025 Yancharuk Alexander
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.1.2
+BASH_HELPERS_VERSION=1.1.4
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=
@@ -72,7 +72,7 @@ function clr() {
 }
 
 # This is variable should be defined in your main script
-#VERSION=1.0.0
+# VERSION=1.0.0
 
 # Function for handling help flags.
 # If needed redefine and modify for your needs.
@@ -193,6 +193,9 @@ function status_dbg() {
 }
 
 # Function for checking script dependencies
+# Examples:
+#     check_dependencies go || exit 1
+#     check_dependencies python date curl || exit 1
 function check_dependencies() {
 	local result=0
 	local code
