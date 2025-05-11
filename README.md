@@ -1,4 +1,4 @@
-[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
+[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
 # bash-helpers
 **Collection of useful functions for usage in Bash scripts**
 
@@ -141,7 +141,9 @@ This software follows *"Semantic Versioning"* specifications. All function signa
 Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
-[Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
+[Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg
+[Github main status src]: https://github.com/nafigator/bash-helpers/actions?query=branch%3Amaster
+[Github main status badge]: https://github.com/nafigator/bash-helpers/actions/workflows/daily.yml/badge.svg?branch=main
 [Release img]: https://img.shields.io/github/v/tag/nafigator/bash-helpers?logo=github&labelColor=333&color=teal
 [Release src]: https://github.com/nafigator/bash-helpers
 [License img]: https://img.shields.io/github/license/nafigator/bash-helpers?logoColor=333&color=teal
