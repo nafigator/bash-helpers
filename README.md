@@ -1,60 +1,92 @@
-[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
+<a id="readme-top"></a>
 # bash-helpers
+[![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
+
 **Collection of useful functions for usage in Bash scripts**
 
 ## Usage
 
-#### Without installation
+<details>
+  <summary>Without installation</summary>
 
-	#!/usr/bin/env bash
+```bash
+#!/usr/bin/env bash
 
-	source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.1/src/bash-helpers.sh)
-	
-#### With installation
+source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.4/src/bash-helpers.sh)
+
+inform 'Bash helpers ready!'
+```
+</details>
+
+<details>
+  <summary>Preinstalled</summary>
+
+```bash
+#!/usr/bin/env bash
+
+. /usr/local/lib/bash/includes/bash-helpers.sh
+
+inform 'Bash helpers ready!'
+```
+</details>
+
+## Installation
+
 1. Put bash libs into `/usr/local/lib/bash/includes` dir.
 2. Source `bash-helpers.sh` in executable script:
-	```bash
-	. /usr/local/lib/bash/includes/bash-helpers.sh
-	```
+   ```bash
+   . /usr/local/lib/bash/includes/bash-helpers.sh
+   ```
 
-## Installation (optional)
+<details>
+  <summary>Example</summary>
 
-	[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
-	sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+```bash
+[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
+sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
+```
+</details>
+
+<details>
+  <summary>Via functions</summary>
+
+```bash
+#!/usr/bin/env bash
+
+download_bash_helpers() {
+	printf "Installing bash-helpers\n"
+	[[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
+
+	sudo curl -so /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
 	sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
 
-#### Install functions examples
+	return 0
+}
 
-	#!/usr/bin/env bash
+init_bash_helpers() {
+	[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] || download_bash_helpers
 
-	download_bash_helpers() {
-		printf "Installing bash-helpers\n"
-		[[ ! -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
+	if [[ ! -x /usr/local/lib/bash/includes/bash-helpers.sh ]]; then
+		printf "Insufficient permissions for bash-helpers execute\n"; return 1
+	fi
 
-		sudo curl -so /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
-		sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
+	. /usr/local/lib/bash/includes/bash-helpers.sh
 
-		return 0
-	}
+	return 0
+}
 
-	init_bash_helpers() {
-		[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] || download_bash_helpers
+init_bash_helpers || exit 1
+```
+</details>
 
-		if [[ ! -x /usr/local/lib/bash/includes/bash-helpers.sh ]]; then
-			printf "Insufficient permissions for bash-helpers execute\n"; return 1
-		fi
+<details>
+  <summary>Via composer</summary>
 
-		. /usr/local/lib/bash/includes/bash-helpers.sh
-
-		return 0
-	}
-
-	init_bash_helpers || exit 1
-
-
-## Composer installation
-
-	composer require nafigator/bash-helpers
+```bash
+composer require nafigator/bash-helpers
+```
+</details>
 
 ## Features:
 * **Defines human-readable functions for colors and formatting:**
