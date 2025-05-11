@@ -142,7 +142,7 @@ Read more on [SemVer.org](http://semver.org).
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg
-[Github main status src]: https://github.com/nafigator/bash-helpers/actions?query=branch%3Amaster
+[Github main status src]: https://github.com/nafigator/bash-helpers/actions?query=branch%3Amain
 [Github main status badge]: https://github.com/nafigator/bash-helpers/actions/workflows/daily.yml/badge.svg?branch=main
 [Release img]: https://img.shields.io/github/v/tag/nafigator/bash-helpers?logo=github&labelColor=333&color=teal
 [Release src]: https://github.com/nafigator/bash-helpers
