@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Copyright (c) 2017-2025 Yancharuk Alexander
+#Copyright (c) 2017-2026 Yancharuk Alexander
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.1.4
+BASH_HELPERS_VERSION=1.1.5
 
 INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
 DEBUG=

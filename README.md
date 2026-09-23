@@ -4,6 +4,8 @@
 
 **Collection of useful functions for usage in Bash scripts**
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
+
 ## Usage
 
 <details>
@@ -12,7 +14,7 @@
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.4/src/bash-helpers.sh)
+source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.5/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```
@@ -158,6 +160,118 @@ composer require nafigator/bash-helpers
 	status_dbg 'Visible because of DEBUG variable' $?
 	```
 	![Debug messages][Debug messages img]
+
+## Configuration
+
+The library is configured via environment variables and by overriding a few functions.
+
+### Environment variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `INTERACTIVE` | `1` if stdin and stdout are TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs). |
+| `DEBUG` | unset | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`). |
+| `VERSION` | unset | Your script version. Used by `print_version()`. Define it in your main script. |
+
+Examples:
+
+```bash
+# Redefine to disable colors
+INTERACTIVE=
+
+# Redefine to enable debug output
+DEBUG=1
+
+# Redefine version in your script for print_version
+VERSION=1.2.3
+```
+
+### Overriding functions
+
+Two functions are meant to be redefined in your script to match your CLI:
+
+- `usage_help()` — prints help text. Redefine to show your own options.
+- `print_version()` — prints version. Redefine if you need custom output (it uses `$VERSION` and `$BASH_HELPERS_VERSION` by default).
+- `parse_options()` — parses options. Redefine if you have extended set of options.
+
+Example:
+
+```bash
+usage_help() {
+  echo "Usage: my-script [OPTIONS]"
+  echo "  -v, --version  Show version"
+  echo "  -h, --help     Show this help"
+}
+
+print_version() {
+  echo "my-script $VERSION"
+}
+```
+
+### Include directory
+
+`include()` loads files from a fixed path:
+
+```bash
+/usr/local/lib/bash/includes
+```
+
+If you need a different location, redefine `include()` in your script.
+
+### Notes
+
+- `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
+- `VERSION` must be set before calling `print_version()`.
+- Color functions (`red`, `bold`, etc.) respect `INTERACTIVE` automatically.
+
+## Dependencies
+
+### Required
+
+| Dependency | Version | Purpose                                                                                                                                |
+|------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `bash`     | ≥ 3.2   | local -r, printf, [[ ]], getopts and other 3.x features used across helpers                                                            |
+| `POSIX utilities`| —       | `printf`, `date`, `readlink`, `basename` — used by `format_date`, `inform`, `warning`, `error`, `debug`, `usage_help`, `print_version` |
+
+### Optional
+
+Installed only if you use the corresponding function.
+
+| Dependency | Used by | Purpose |
+|------------|---------|---------|
+| `bc`       | `float()` | Arbitrary precision arithmetic for decimal conversion |
+| `sed`      | `float()` | Normalizes decimal separator (`,` → `.`) |
+| `git`      | `git_config_bool()` | Reads boolean values from git config |
+| `curl`     | Installation snippets in this README | Downloads `bash-helpers.sh` |
+
+### Function → dependency map
+
+| Function | Depends on                     |
+|----------|--------------------------------|
+| `black` … `clr` | `printf` (builtin)             |
+| `format_date` | `date`, `printf` (builtin)     |
+| `error`, `inform`, `warning`, `debug` | `date`, `printf` (builtin)     |
+| `status`, `status_dbg` | `date`, `printf` (builtin)     |
+| `check_dependencies` | `date`, `command -v` (builtin) |
+| `float` | `sed`, `bc`                    |
+| `include` | — (pure bash)                  |
+| `usage_help`, `print_version` | `basename`, `readlink`         |
+| `git_config_bool` | `git`                          |
+| `parse_options` | `getopts` (builtin)            |
+
+### Checking at runtime
+
+Use the bundled helper to verify dependencies before running your script:
+
+```bash
+check_dependencies bash date git || exit 1
+```
+
+### Notes
+
+- All helpers assume a POSIX-like environment (Linux, macOS, BSD). Windows is supported only via WSL or MSYS2/Cygwin.
+- `bc` is not installed by default on minimal images (e.g. `alpine`, `debian:slim`). Install it with `apk add bc` / `apt-get install -y bc` if you rely on `float()`.
+- `INTERACTIVE` and `DEBUG` are **not** external dependencies — they are environment variables consumed by the library. See [Configuration](#configuration)
 
 ## Message statuses
 
