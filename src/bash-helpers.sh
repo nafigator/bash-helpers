@@ -23,7 +23,13 @@
 # shellcheck disable=SC2034
 BASH_HELPERS_VERSION=1.1.5
 
-INTERACTIVE=$([[ -t 0 && -t 1 ]] && echo 1)
+# Handle NO_COLOR. See https://no-color.org
+if [[ -n ${NO_COLOR:-} ]]; then
+  INTERACTIVE=
+elif [[ -z ${INTERACTIVE+x} ]]; then
+  INTERACTIVE=$([[ -t 1 ]] && echo 1)
+fi
+
 DEBUG=
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -71,22 +77,21 @@ function clr() {
 	[[ -z ${INTERACTIVE} ]] || printf "\e[0m"
 }
 
-# This is variable should be defined in your main script
+# This variable should be defined in your main script
 # VERSION=1.0.0
 
 # Function for handling help flags.
 # If needed redefine and modify for your needs.
 function usage_help() {
-	# shellcheck disable=SC2059
-  printf "$(bold)Usage:$(clr)
-  $(basename "$(readlink -f "$0")") [OPTIONS...]
+  printf '%sUsage:%s
+  %s [OPTIONS...]
 
-$(bold)Options:$(clr)
+%sOptions:%s
   -v, --version              Show script version
   -h, --help                 Show this help message
   -d, --debug                Run program in debug mode
 
-"
+' "$(bold)" "$(clr)" "$(basename "$(readlink -f "$0")")" "$(bold)" "$(clr)"
 
 	return 0
 }
@@ -94,35 +99,33 @@ $(bold)Options:$(clr)
 # Function for handling version flags.
 # If needed redefine and modify for your needs.
 function print_version() {
-	# shellcheck disable=SC2059
-	printf "$(basename "$(readlink -f "$0")") $(bold)${VERSION}$(clr)\n"
-	# shellcheck disable=SC2059
-	printf "bash-helpers.sh $(bold)${BASH_HELPERS_VERSION}$(clr)\n\n"
+	printf '%s %s\n' "$(basename "$(readlink -f "$0")")" "$(bold)${VERSION}$(clr)"
+	printf 'bash-helpers.sh %s\n\n' "$(bold)${BASH_HELPERS_VERSION}$(clr)"
 }
 
 # Function for datetime output
 function format_date() {
-	printf "%s%s%s" "$(gray)" "$(date +%Y-%m-%d\ %H:%M:%S)" "$(clr)"
+	printf '%s%s%s' "$(gray)" "$(date +%Y-%m-%d\ %H:%M:%S)" "$(clr)"
 }
 
 # Function for error messages
 function error() {
-	printf "[%s]:[%sERROR%s] $1\n" "$(format_date)" "$(red)" "$(clr)" >&2
+	printf '[%s]:[%sERROR%s] %s\n' "$(format_date)" "$(red)" "$(clr)" "$1" >&2
 }
 
 # Function for informational messages
 function inform() {
-	printf "[%s]:[%sINFO%s] $1\n" "$(format_date)" "$(green)" "$(clr)"
+	printf '[%s]:[%sINFO%s] %s\n' "$(format_date)" "$(green)" "$(clr)" "$1"
 }
 
 # Function for warning messages
 function warning() {
-	printf "[%s]:[%sWARN%s] $1\n" "$(format_date)" "$(yellow)" "$(clr)" >&2
+	printf '[%s]:[%sWARN%s] %s\n' "$(format_date)" "$(yellow)" "$(clr)" "$1" >&2
 }
 
 # Function for debug messages
 function debug() {
-	[ -z "$DEBUG" ] || printf "[%s]:[%s ?? %s] $1\n" "$(format_date)" "$(gray)" "$(clr)"
+	[ -z "$DEBUG" ] || printf '[%s]:[%s ?? %s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "$1"
 }
 
 # Function for operation status
@@ -139,20 +142,13 @@ function status() {
 	fi
 
 	local result=0
-	# shellcheck disable=SC2155
-	local -r ok_msg="[$(format_date)]:[$(green)%s$(clr)] "
-	# shellcheck disable=SC2155
-	local -r err_msg="[$(format_date)]:[$(red)%s$(clr)] "
+	local -r ok_label="$(green) OK $(clr)"
+	local -r err_label="$(red)FAIL$(clr)"
 
-	if [[ $2 = OK ]]; then
-		printf "$ok_msg%b\n" ' OK ' "$1"
-	elif [[ $2 = FAIL ]]; then
-		printf "$err_msg%b\n" FAIL "$1"
-		result=1
-	elif [[ $2 = 0 ]]; then
-		printf "$ok_msg%b\n" ' OK ' "$1"
-	elif [[ $2 -gt 0 ]]; then
-		printf "$err_msg%b\n" FAIL "$1"
+	if [[ $2 = OK || $2 = 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
+	elif [[ $2 = FAIL || $2 -gt 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
 		result=1
 	fi
 
@@ -173,19 +169,13 @@ function status_dbg() {
 	fi
 
 	local result=0
-	# shellcheck disable=SC2155
-	local -r ok_msg="[$(format_date)]:[$(green)%s$(clr)] "
-	# shellcheck disable=SC2155
-	local -r err_msg="[$(format_date)]:[$(red)%s$(clr)] "
+	local -r ok_label="$(green) ++ $(clr)"
+	local -r err_label="$(red) -- $(clr)"
 
-	if [[ $2 = OK ]]; then
-		printf "$ok_msg%b\n" ' ++ ' "$1"
-	elif [[ $2 = FAIL ]]; then
-		printf "$err_msg%b\n" ' -- ' "$1"
-	elif [[ $2 = 0 ]]; then
-		printf "$ok_msg%b\n" ' ++ ' "$1"
-	elif [[ $2 -gt 0 ]]; then
-		printf "$err_msg%b\n" ' -- ' "$1"
+	if [[ $2 = OK || $2 = 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
+	elif [[ $2 = FAIL || $2 -gt 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
 		result=1
 	fi
 
