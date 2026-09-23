@@ -270,8 +270,9 @@ function include() {
 #			h ) usage_help; exit 0;;
 #			d ) DEBUG=1;;
 #			t ) TARGET=${OPTARG};;
-#			- ) local value="${OPTARG#*=}"
-#				case $OPTARG in
+#			- ) local param="${OPTARG%%=*}"
+#				local value="${OPTARG#*=}"
+#				case $param in
 #					version ) print_version; exit 0;;
 #					help    ) usage_help; exit 0;;
 #					debug   ) DEBUG=1;;
@@ -294,8 +295,9 @@ function parse_options() {
 			v ) print_version; exit 0;;
 			h ) usage_help; exit 0;;
 			d ) DEBUG=1;;
-			- ) local value="${OPTARG#*=}"
-				case $OPTARG in
+			- ) local param="${OPTARG%%=*}"
+				local value="${OPTARG#*=}"
+				case $param in
 					version ) print_version; exit 0;;
 					help    ) usage_help; exit 0;;
 					debug   ) DEBUG=1;;
