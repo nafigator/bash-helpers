@@ -1,4 +1,4 @@
-name: Shell
+name: Release
 
 permissions:
   contents: read
