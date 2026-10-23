@@ -51,7 +51,7 @@ jobs:
           mkdir -p artifacts
           cp src/bash-helpers.sh artifacts/bash-helpers.sh
           cd artifacts
-          sha256sum bash-helpers.sh > SHA256SUMS.txt
+          sha256sum bash-helpers.sh > sha256sum.txt
 
       - name: Create release and upload packages
         env:
