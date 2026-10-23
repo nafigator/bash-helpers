@@ -75,14 +75,14 @@ This project follows [Conventional Commits](https://www.conventionalcommits.org/
 
 Common types:
 
-| Type | When |
-|------|------|
-| `feat` | New function or new capability of an existing function |
-| `fix`  | Bug fix |
-| `docs` | README, comments, examples |
-| `refactor` | Internal change without behavior change |
-| `test` | Tests and CI |
-| `chore` | Tooling, configs, version bumps |
+| Type       | When                                                   |
+|------------|--------------------------------------------------------|
+| `feat`     | New function or new capability of an existing function |
+| `fix`      | Bug fix                                                |
+| `docs`     | README, comments, examples                             |
+| `refactor` | Internal change without behavior change                |
+| `test`     | Tests and CI                                           |
+| `chore`    | Tooling, configs, version bumps                        |
 
 Examples:
 
