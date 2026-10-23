@@ -15,7 +15,6 @@ on:
         type: boolean
         default: false
   push:
-    branches: [ "main" ]
     tags:
       - "*.*.*"
 
@@ -61,7 +60,7 @@ jobs:
           FLAGS=(--latest)
           [[ $DRAFT = true ]] && FLAGS=(--draft)
 
-          TITLE="${TAG}"
+          TITLE="v${TAG}"
           [[ $DRAFT = true ]] && TITLE="[DRAFT] $TITLE"
 
           ls -lh artifacts/
