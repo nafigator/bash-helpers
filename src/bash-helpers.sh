@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.6-rc-1
+readonly BASH_HELPERS_VERSION=1.1.6-rc-2
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
@@ -36,47 +36,47 @@ fi
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 function black() {
-	[[ -z $INTERACTIVE ]] || printf "\e[30m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[30m"
 }
 
 function red() {
-	[[ -z $INTERACTIVE ]] || printf "\e[31m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[31m"
 }
 
 function green() {
-	[[ -z $INTERACTIVE ]] || printf "\e[32m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[32m"
 }
 
 function yellow() {
-	[[ -z $INTERACTIVE ]] || printf "\e[33m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[33m"
 }
 
 function blue() {
-	[[ -z $INTERACTIVE ]] || printf "\e[34m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[34m"
 }
 
 function magenta() {
-	[[ -z $INTERACTIVE ]] || printf "\e[35m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[35m"
 }
 
 function cyan() {
-	[[ -z $INTERACTIVE ]] || printf "\e[36m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[36m"
 }
 
 function white() {
-	[[ -z $INTERACTIVE ]] || printf "\e[37m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[37m"
 }
 
 function gray() {
-	[[ -z $INTERACTIVE ]] || printf "\e[38;5;242m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[38;5;242m"
 }
 
 function bold() {
-	[[ -z $INTERACTIVE ]] || printf "\e[1m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[1m"
 }
 
 function clr() {
-	[[ -z $INTERACTIVE ]] || printf "\e[0m"
+	[[ -z ${INTERACTIVE:-} ]] || printf "\e[0m"
 }
 
 # This variable should be defined in your main script
@@ -112,22 +112,22 @@ function format_date() {
 
 # Function for error messages
 function error() {
-	printf '[%s]:[%sERROR%s] %s\n' "$(format_date)" "$(red)" "$(clr)" "$1" >&2
+	printf '[%s]:[%sERROR%s] %s\n' "$(format_date)" "$(red)" "$(clr)" "${1:-}" >&2
 }
 
 # Function for informational messages
 function inform() {
-	printf '[%s]:[%sINFO%s] %s\n' "$(format_date)" "$(green)" "$(clr)" "$1"
+	printf '[%s]:[%sINFO%s] %s\n' "$(format_date)" "$(green)" "$(clr)" "${1:-}"
 }
 
 # Function for warning messages
 function warning() {
-	printf '[%s]:[%sWARN%s] %s\n' "$(format_date)" "$(yellow)" "$(clr)" "$1" >&2
+	printf '[%s]:[%sWARN%s] %s\n' "$(format_date)" "$(yellow)" "$(clr)" "${1:-}" >&2
 }
 
 # Function for debug messages
 function debug() {
-	[[ -z $DEBUG ]] || printf '[%s]:[%sDEBUG%s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "$1"
+	[[ -z ${DEBUG:-} ]] || printf '[%s]:[%sDEBUG%s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "${1:-}"
 }
 
 # Function for operation status
@@ -138,12 +138,12 @@ function debug() {
 #     status 'Run operation' OK
 #     status 'Run operation' FAIL
 function status() {
-	if [[ -z $1 ]]; then
+	if [[ -z ${1:-} ]]; then
 		error 'status(): message parameter required!'
 		return 1
 	fi
 
-	if [[ -z $2 ]]; then
+	if [[ -z ${2:-} ]]; then
 		error 'status(): status parameter required!'
 		return 1
 	fi
@@ -152,13 +152,13 @@ function status() {
 	local -r ok_label="$(green) OK $(clr)"
 	local -r err_label="$(red)FAIL$(clr)"
 
-	if [[ $2 = OK || $2 = 0 ]]; then
-		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
-	elif [[ $2 = FAIL ]] || [[ $2 =~ ^[0-9]+$ && $2 -gt 0 ]]; then
-		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
+	if [[ ${2:-} = OK || ${2:-} = 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "${1:-}"
+	elif [[ ${2:-} = FAIL ]] || [[ ${2:-} =~ ^[0-9]+$ && ${2:-} -gt 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "${1:-}"
 		result=1
 	else
-		warning "Unknown status: '$2'"
+		warning "Unknown status: '${2:-}'"
 	fi
 
 	return $result
@@ -170,14 +170,14 @@ function status() {
 #     status_dbg 'Debug operation status' OK
 #     status_dbg 'Debug operation status' FAIL
 function status_dbg() {
-	[[ -z $DEBUG ]] && return 0
+	[[ -z ${DEBUG:-} ]] && return 0
 
-	if [[ -z $1 ]]; then
+	if [[ -z ${1:-} ]]; then
 		error 'status_dbg(): message parameter required!'
 		return 1
 	fi
 
-	if [[ -z $2 ]]; then
+	if [[ -z ${2:-} ]]; then
 		error 'status_dbg(): status parameter required!'
 		return 1
 	fi
@@ -186,13 +186,13 @@ function status_dbg() {
 	local -r ok_label="$(green) ++ $(clr)"
 	local -r err_label="$(red) -- $(clr)"
 
-	if [[ $2 = OK || $2 = 0 ]]; then
-		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
-	elif [[ $2 = FAIL ]] || [[ $2 =~ ^[0-9]+$ && $2 -gt 0 ]]; then
-		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
+	if [[ ${2:-} = OK || ${2:-} = 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "${1:-}"
+	elif [[ ${2:-} = FAIL ]] || [[ ${2:-} =~ ^[0-9]+$ && ${2:-} -gt 0 ]]; then
+		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "${1:-}"
 		result=1
 	else
-		warning "Unknown status: '$2'"
+		warning "Unknown status: '${2:-}'"
 	fi
 
 	return $result
@@ -225,12 +225,12 @@ function check_dependencies() {
 
 # Convert string value to float
 function float() {
-	if [[ $1 = '""' || -z $1 ]]; then
+	if [[ ${1:-} = '""' || -z ${1:-} ]]; then
 		printf '0\n'
 		return 0
 	fi
 
-	printf '%s\n' "$1" | sed 's/,/\./' | bc -l || return 1
+	printf '%s\n' "${1:-}" | sed 's/,/\./' | bc -l || return 1
 
 	return 0
 }
@@ -246,7 +246,7 @@ function float() {
 #
 # For security reasons paths with '..' not allowed. No dots-anywhere, otherwise returns 1.
 function include() {
-	if [[ -z $1 ]]; then
+	if [[ -z ${1:-} ]]; then
 		error "include(): empty path"
 		return 1
 	fi
@@ -354,7 +354,7 @@ function parse_options() {
 		esac
 	done
 
-	debug "Variable DEBUG: '$DEBUG'"
+	debug "Variable DEBUG: '${DEBUG:-}'"
 	debug "parse_options() result: $result"
 
 	return $result
@@ -368,9 +368,9 @@ function git_config_bool() {
 	local -a git_args=()
 	local value
 
-	[[ -n ${2:-} ]] && git_args=(-C "$2")
+	[[ -n ${2:-} ]] && git_args=(-C "${2:-}")
 
-	value=$(git "${git_args[@]}" config --bool "$1") || return $?
+	value=$(git ${git_args[@]+"${git_args[@]}"} config --bool "${1:-}") || return $?
 
 	[[ $value = true ]] && printf '1\n'
 
