@@ -48,10 +48,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Crate sha256sum
-        with:
-          path: artifacts
         run: |
-          cp ../src/bash-helpers.sh .
+          mkdir -p artifacts
+          cp src/bash-helpers.sh artifacts/bash-helpers.sh
+          cd artifacts
           sha256sum bash-helpers.sh > SHA256SUMS.txt
 
       - name: Create release and upload packages
