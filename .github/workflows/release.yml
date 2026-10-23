@@ -82,6 +82,7 @@ jobs:
               --repo "$GITHUB_REPOSITORY" \
               --target ${{ github.sha }} \
               --title "$TITLE" \
+              --generate-notes \
               "${FLAGS[@]}" \
               artifacts/*.*
           fi
