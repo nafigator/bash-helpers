@@ -97,12 +97,12 @@ sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubuser
 </details>
 
 <details>
-  <summary>Via functions</summary>
+  <summary>Via functions (fast)</summary>
 
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/76a2928/src/bash-helpers.sh"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -110,7 +110,7 @@ download_bash_helpers() {
 	echo 'Installing bash-helpers'
 
 	mkdir -p "$HELPERS_DIR" || return 1
-	curl -fsSL --retry 3 -m 30 -o "$HELPERS_LIB" "$HELPERS_URL" || return 1
+	curl -fsSL -o "$HELPERS_LIB" "$HELPERS_URL" || return 1
 
 	return 0
 }
@@ -119,6 +119,78 @@ init_bash_helpers() {
 	[[ -r "$HELPERS_LIB" ]] || download_bash_helpers || return 1
 
 	. "$HELPERS_LIB" || return 1
+
+	return 0
+}
+
+init_bash_helpers || exit 1
+```
+</details>
+
+<details>
+  <summary>Via functions (safe)</summary>
+
+```bash
+#!/usr/bin/env bash
+
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/bash-helpers.sh"
+readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/sha256sum.txt"
+readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
+readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
+
+download_bash_helpers() {
+	echo 'Installing bash-helpers'
+
+	local tmp tmpdir sum
+	tmpdir=$(mktemp -d) || {
+		echo 'mktemp fail' >&2
+		return 1
+	}
+	tmp="$tmpdir/bash-helpers.sh"
+
+	sum=$(curl -fsSL --retry 3 -m 30 "$HELPERS_SUM_URL") || {
+		echo 'Get bash-helpers sum failed' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	[[ -n $sum ]] || {
+		echo 'Empty bash-helpers checksum' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	curl -fsSL --retry 3 -m 30 -o "$tmp" "$HELPERS_URL" || {
+		echo 'Download bash-helpers failed' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	# For linux sha256sum
+	( cd "$tmpdir" || exit 1; printf '%s\n' "$sum" | sha256sum -c --status ) || {
+		echo 'Check bash-helpers sum failed' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	mkdir -p "$HELPERS_DIR" || {
+		echo 'Create destination dir for bash-helpers failed' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	install -m 0644 "$tmp" "$HELPERS_LIB" || {
+		echo 'Install bash-helpers failed' >&2
+		rm -rf "$tmpdir"; return 1
+	}
+
+	rm -rf "$tmpdir"
+
+	return 0
+}
+
+init_bash_helpers() {
+	[[ -r "$HELPERS_LIB" ]] || download_bash_helpers || return 1
+
+	. "$HELPERS_LIB" || {
+		echo 'Source bash-helpers failed' >&2
+		return 1
+	}
 
 	return 0
 }
