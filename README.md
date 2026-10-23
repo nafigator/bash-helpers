@@ -6,6 +6,135 @@
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
+## Features:
+* **Defines human-readable functions for colors and formatting:**
+	- black()
+	- red()
+	- green()
+	- yellow()
+	- blue()
+	- magenta()
+	- cyan()
+	- white()
+	- gray()
+	- bold()
+	- clr()
+
+  Examples:
+  ```bash
+  printf "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
+  ```
+  ![Colors definition][Colors definition img]
+> [!TIP]
+> For logging purpose colors may be disabled by global `NO_COLOR` or `INTERACTIVE` variable:
+> `NO_COLOR=1`
+> `INTERACTIVE=`
+* **Functions for nicely formatted messages `error`, `inform`, `warning`, `debug`**
+
+  Examples:
+  ```bash
+  inform 'Script start'
+  warning 'Make backup!'
+  error 'File not found'
+  debug 'Fall back to 0'
+  ```
+  ![Messages formatting][Messages formatting img]
+* **Libs including.**
+
+  Example:
+  ```bash
+  include google/client || exit 1
+  include mysql/query-builder || exit 1
+  include logger; status 'Logger including' $? || exit 1
+  ```
+* **Status messages.**
+
+  Example:
+  ```bash
+  test -d /usr/local/nonexistent
+  status 'Check /usr/local/nonexistent dir' $?
+  test -d /usr/local/bin
+  status 'Check /usr/local/bin dir' $?
+  ```
+  ![Status messages][Status messages img]
+* **Checking dependencies.**
+
+  Example:
+  ```bash
+  check_dependencies yarn rust || exit 1
+  ```
+  ![Check dependencies][Check dependencies img]
+* **Debug messages and statuses.**
+
+  Example:
+  ```bash
+  debug 'This message is hidden'
+  status_dbg 'This status is hidden' $?
+  DEBUG=1
+  debug 'Visible because of DEBUG variable'
+  test -d /nonexists
+  status_dbg 'Visible because of DEBUG variable' $?
+  test -d /var/log
+  status_dbg 'Visible because of DEBUG variable' $?
+  ```
+  ![Debug messages][Debug messages img]
+
+## Installation
+
+1. Put bash libs into `/usr/local/lib/bash/includes` dir.
+2. Source `bash-helpers.sh` in executable script:
+   ```bash
+   . /usr/local/lib/bash/includes/bash-helpers.sh
+   ```
+
+<details>
+  <summary>Example</summary>
+
+```bash
+sudo mkdir -p /usr/local/lib/bash/includes
+sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+```
+</details>
+
+<details>
+  <summary>Via functions</summary>
+
+```bash
+#!/usr/bin/env bash
+
+readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/76a2928/src/bash-helpers.sh"
+readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
+readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
+
+download_bash_helpers() {
+	echo 'Installing bash-helpers'
+
+	mkdir -p "$HELPERS_DIR" || return 1
+	curl -fsSL --retry 3 -m 30 -o "$HELPERS_LIB" "$HELPERS_URL" || return 1
+
+	return 0
+}
+
+init_bash_helpers() {
+	[[ -r "$HELPERS_LIB" ]] || download_bash_helpers || return 1
+
+	. "$HELPERS_LIB" || return 1
+
+	return 0
+}
+
+init_bash_helpers || exit 1
+```
+</details>
+
+<details>
+  <summary>Via composer</summary>
+
+```bash
+composer require nafigator/bash-helpers
+```
+</details>
+
 ## Usage
 
 <details>
@@ -14,7 +143,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -s https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.5/src/bash-helpers.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.5/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```
@@ -32,134 +161,8 @@ inform 'Bash helpers ready!'
 ```
 </details>
 
-## Installation
-
-1. Put bash libs into `/usr/local/lib/bash/includes` dir.
-2. Source `bash-helpers.sh` in executable script:
-   ```bash
-   . /usr/local/lib/bash/includes/bash-helpers.sh
-   ```
-
-<details>
-  <summary>Example</summary>
-
-```bash
-[ -d /usr/local/lib/bash/includes ] || sudo mkdir -p /usr/local/lib/bash/includes
-sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
-sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
-```
-</details>
-
-<details>
-  <summary>Via functions</summary>
-
-```bash
-#!/usr/bin/env bash
-
-download_bash_helpers() {
-	printf "Installing bash-helpers\n"
-	[[ -d /usr/local/lib/bash/includes ]] || sudo mkdir -p /usr/local/lib/bash/includes
-
-	sudo curl -so /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
-	sudo chmod +x /usr/local/lib/bash/includes/bash-helpers.sh
-
-	return 0
-}
-
-init_bash_helpers() {
-	[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] || download_bash_helpers
-
-	if [[ ! -x /usr/local/lib/bash/includes/bash-helpers.sh ]]; then
-		printf "Insufficient permissions for bash-helpers execute\n"; return 1
-	fi
-
-	. /usr/local/lib/bash/includes/bash-helpers.sh
-
-	return 0
-}
-
-init_bash_helpers || exit 1
-```
-</details>
-
-<details>
-  <summary>Via composer</summary>
-
-```bash
-composer require nafigator/bash-helpers
-```
-</details>
-
-## Features:
-* **Defines human-readable functions for colors and formatting:**
-	- black()
-	- red()
-	- green()
-	- yellow()
-	- blue()
-	- magenta()
-	- cyan()
-	- white()
-	- gray()
-	- bold()
-	- clr()
-
-	Examples:
-	```bash
-	printf "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
-	```
-	![Colors definition][Colors definition img]
-	> **NOTE**: For logging purpose colors may be disabled by global `INTERACTIVE` variable:
-	>
-	>INTERACTIVE=
-* **Functions for nicely formatted messages `error`, `inform`, `warning`.**
-
-	Examples:
-	```bash
-	inform 'Script start'
-	warning 'Make backup!'
-	error 'File not found'
-	```
-	![Messages formatting][Messages formatting img]
-* **Libs including.**
-
-	Example:
-	```bash
-	include google/client || exit 1
-	include mysql/query-builder || exit 1
-	include logger; status 'Logger including' $? || exit 1
-	```
-* **Status messages.**
-
-	Example:
-	```bash
-	test -d /usr/local/nonexistent
-	status 'Check /usr/local/nonexistent dir' $?
-	test -d /usr/local/bin
-	status 'Check /usr/local/bin dir' $?
-	```
-	![Status messages][Status messages img]
-* **Checking dependencies.**
-
-	Example:
-	```bash
-	check_dependencies yarn rust || exit 1
-	```
-	![Check dependencies][Check dependencies img]
-* **Debug messages and statuses.**
-
-	Example:
-	```bash
-	debug 'This message is hidden'
-	status_dbg 'This status is hidden' $?
-	DEBUG=1
-	debug 'Visible because of DEBUG variable'
-	test -d /nonexists
-	status_dbg 'Visible because of DEBUG variable' $?
-	test -d /var/log
-	status_dbg 'Visible because of DEBUG variable' $?
-	```
-	![Debug messages][Debug messages img]
+> [!IMPORTANT]
+> Source the library before any `cd`. The script path is resolved at source time via `realpath`.
 
 ## Configuration
 
@@ -167,11 +170,12 @@ The library is configured via environment variables and by overriding a few func
 
 ### Environment variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `INTERACTIVE` | `1` if stdin and stdout are TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs). |
-| `DEBUG` | unset | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`). |
-| `VERSION` | unset | Your script version. Used by `print_version()`. Define it in your main script. |
+| Variable      | Default                                 | Description                                                                                        |
+|---------------|-----------------------------------------|----------------------------------------------------------------------------------------------------|
+| `NO_COLOR`    | unset                                   | Disables ANSI color output. Has priority over `INTERACTIVE`. See [no-color](https://no-color.org). |
+| `INTERACTIVE` | `1` if stdout is a TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs).        |
+| `DEBUG`       | unset                                   | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`).          |
+| `VERSION`     | unset                                   | Your script version. Used by `print_version()`. Define it in your main script.                     |
 
 Examples:
 
@@ -188,11 +192,11 @@ VERSION=1.2.3
 
 ### Overriding functions
 
-Two functions are meant to be redefined in your script to match your CLI:
+Functions are meant to be optionally redefined in your script to match your CLI:
 
-- `usage_help()` — prints help text. Redefine to show your own options.
-- `print_version()` — prints version. Redefine if you need custom output (it uses `$VERSION` and `$BASH_HELPERS_VERSION` by default).
-- `parse_options()` — parses options. Redefine if you have extended set of options.
+- `usage_help()` - prints help text. Redefine to show your own options.
+- `print_version()` - prints version. Redefine if you need custom output (it uses `$VERSION` and `$BASH_HELPERS_VERSION` by default).
+- `parse_options()` - parses options. Redefine if you have extended set of options.
 
 Example:
 
@@ -210,68 +214,66 @@ print_version() {
 
 ### Include directory
 
-`include()` loads files from a fixed path:
+By default `include()` loads files from a fixed path:
 
 ```bash
 /usr/local/lib/bash/includes
 ```
 
-If you need a different location, redefine `include()` in your script.
+If you need a different location, use `BASH_HELPERS_INCLUDES` or redefine `include()` in your script.
 
-### Notes
-
-- `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
-- `VERSION` must be set before calling `print_version()`.
-- Color functions (`red`, `bold`, etc.) respect `INTERACTIVE` automatically.
+> [!NOTE]
+> - `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
+> - If `VERSION` is not set before calling `print_version()`, it falls back to `undefined`.
+> - Color functions (`red`, `bold`, etc.) respect `NO_COLOR` and `INTERACTIVE` automatically.
 
 ## Dependencies
 
 ### Required
 
-| Dependency | Version | Purpose                                                                                                                                |
-|------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `bash`     | ≥ 3.2   | local -r, printf, [[ ]], getopts and other 3.x features used across helpers                                                            |
-| `POSIX utilities`| —       | `printf`, `date`, `readlink`, `basename` — used by `format_date`, `inform`, `warning`, `error`, `debug`, `usage_help`, `print_version` |
+| Dependency        | Version | Purpose                                                                                                                                |
+|-------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `bash`            | >= 3.2  | local -r, printf, [[ ]], getopts and other 3.x features used across helpers                                                            |
+| `POSIX utilities` | -       | `printf`, `date`, `realpath`, `basename` - used by `format_date`, `inform`, `warning`, `error`, `debug`, `usage_help`, `print_version` |
 
 ### Optional
 
 Installed only if you use the corresponding function.
 
-| Dependency | Used by | Purpose |
-|------------|---------|---------|
-| `bc`       | `float()` | Arbitrary precision arithmetic for decimal conversion |
-| `sed`      | `float()` | Normalizes decimal separator (`,` → `.`) |
-| `git`      | `git_config_bool()` | Reads boolean values from git config |
-| `curl`     | Installation snippets in this README | Downloads `bash-helpers.sh` |
+| Dependency | Used by                              | Purpose                                               |
+|------------|--------------------------------------|-------------------------------------------------------|
+| `bc`       | `float()`                            | Arbitrary precision arithmetic for decimal conversion |
+| `sed`      | `float()`                            | Normalizes decimal separator (`,` -> `.`)             |
+| `git`      | `git_config_bool()`                  | Reads boolean values from git config                  |
+| `curl`     | Installation snippets in this README | Downloads `bash-helpers.sh`                           |
 
-### Function → dependency map
+### Function -> dependency map
 
-| Function | Depends on                     |
-|----------|--------------------------------|
-| `black` … `clr` | `printf` (builtin)             |
-| `format_date` | `date`, `printf` (builtin)     |
+| Function                              | Depends on                     |
+|---------------------------------------|--------------------------------|
+| `black` ... `clr`                     | `printf` (builtin)             |
+| `format_date`                         | `date`, `printf` (builtin)     |
 | `error`, `inform`, `warning`, `debug` | `date`, `printf` (builtin)     |
-| `status`, `status_dbg` | `date`, `printf` (builtin)     |
-| `check_dependencies` | `date`, `command -v` (builtin) |
-| `float` | `sed`, `bc`                    |
-| `include` | — (pure bash)                  |
-| `usage_help`, `print_version` | `basename`, `readlink`         |
-| `git_config_bool` | `git`                          |
-| `parse_options` | `getopts` (builtin)            |
+| `status`, `status_dbg`                | `date`, `printf` (builtin)     |
+| `check_dependencies`                  | `date`, `command -v` (builtin) |
+| `float`                               | `sed`, `bc`                    |
+| `include`                             | - (pure bash)                  |
+| `usage_help`, `print_version`         | `basename`, `realpath`         |
+| `git_config_bool`                     | `git`                          |
+| `parse_options`                       | `getopts` (builtin)            |
 
 ### Checking at runtime
 
 Use the bundled helper to verify dependencies before running your script:
 
 ```bash
-check_dependencies bash date git || exit 1
+check_dependencies curl jq || exit 1
 ```
 
-### Notes
-
-- All helpers assume a POSIX-like environment (Linux, macOS, BSD). Windows is supported only via WSL or MSYS2/Cygwin.
-- `bc` is not installed by default on minimal images (e.g. `alpine`, `debian:slim`). Install it with `apk add bc` / `apt-get install -y bc` if you rely on `float()`.
-- `INTERACTIVE` and `DEBUG` are **not** external dependencies — they are environment variables consumed by the library. See [Configuration](#configuration)
+> [!NOTE]
+> - All helpers assume a POSIX-like environment (Linux, macOS, BSD). Windows is supported only via WSL or MSYS2/Cygwin.
+> - `bc` is not installed by default on minimal images (e.g. `alpine`, `debian:slim`). Install it with `apk add bc` / `apt install bc` if you rely on `float()`.
+> - `INTERACTIVE` and `DEBUG` are **not** external dependencies - they are environment variables consumed by the library. See [Configuration](#configuration)
 
 ## Message statuses
 
@@ -296,8 +298,8 @@ Read more on [SemVer.org](http://semver.org).
 [License src]: https://tldrlegal.com/license/mit-license
 [Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-teal.svg
 [Versioning src]: https://semver.org
-[Colors definition img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/colors-definition.jpg
-[Messages formatting img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/messages-formatting.jpg
-[Status messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/status-messages.jpg
-[Check dependencies img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/check-dependencies.jpg
-[Debug messages img]: https://raw.githubusercontent.com/nafigator/bash-helpers/master/.images/debug-messages.jpg
+[Colors definition img]: .images/colors-definition.jpg
+[Messages formatting img]: .images/messages-formatting.jpg
+[Status messages img]: .images/status-messages.jpg
+[Check dependencies img]: .images/check-dependencies.jpg
+[Debug messages img]: .images/debug-messages.jpg

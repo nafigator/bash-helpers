@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# Library. Intended to be sourced.
 
 #Copyright (c) 2017-2026 Yancharuk Alexander
 #
@@ -21,7 +21,9 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.1.5
+readonly BASH_HELPERS_VERSION=1.1.6-rc-1
+
+readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
 # Handle NO_COLOR. See https://no-color.org
 if [[ -n ${NO_COLOR:-} ]]; then
@@ -30,51 +32,51 @@ elif [[ -z ${INTERACTIVE+x} ]]; then
   INTERACTIVE=$([[ -t 1 ]] && echo 1)
 fi
 
-DEBUG=
+[[ -z ${DEBUG+x} ]] && DEBUG=
 
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 function black() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[30m"
+	[[ -z $INTERACTIVE ]] || printf "\e[30m"
 }
 
 function red() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[31m"
+	[[ -z $INTERACTIVE ]] || printf "\e[31m"
 }
 
 function green() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[32m"
+	[[ -z $INTERACTIVE ]] || printf "\e[32m"
 }
 
 function yellow() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[33m"
+	[[ -z $INTERACTIVE ]] || printf "\e[33m"
 }
 
 function blue() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[34m"
+	[[ -z $INTERACTIVE ]] || printf "\e[34m"
 }
 
 function magenta() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[35m"
+	[[ -z $INTERACTIVE ]] || printf "\e[35m"
 }
 
 function cyan() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[36m"
+	[[ -z $INTERACTIVE ]] || printf "\e[36m"
 }
 
 function white() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[37m"
+	[[ -z $INTERACTIVE ]] || printf "\e[37m"
 }
 
 function gray() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[38;5;242m"
+	[[ -z $INTERACTIVE ]] || printf "\e[38;5;242m"
 }
 
 function bold() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[1m"
+	[[ -z $INTERACTIVE ]] || printf "\e[1m"
 }
 
 function clr() {
-	[[ -z ${INTERACTIVE} ]] || printf "\e[0m"
+	[[ -z $INTERACTIVE ]] || printf "\e[0m"
 }
 
 # This variable should be defined in your main script
@@ -91,7 +93,7 @@ function usage_help() {
   -h, --help                 Show this help message
   -d, --debug                Run program in debug mode
 
-' "$(bold)" "$(clr)" "$(basename "$(readlink -f "$0")")" "$(bold)" "$(clr)"
+' "$(bold)" "$(clr)" "$(basename "$BASH_HELPERS_SCRIPT_PATH")" "$(bold)" "$(clr)"
 
 	return 0
 }
@@ -99,13 +101,13 @@ function usage_help() {
 # Function for handling version flags.
 # If needed redefine and modify for your needs.
 function print_version() {
-	printf '%s %s\n' "$(basename "$(readlink -f "$0")")" "$(bold)${VERSION}$(clr)"
+	printf '%s %s\n' "$(basename "$BASH_HELPERS_SCRIPT_PATH")" "$(bold)${VERSION:-undefined}$(clr)"
 	printf 'bash-helpers.sh %s\n\n' "$(bold)${BASH_HELPERS_VERSION}$(clr)"
 }
 
 # Function for datetime output
 function format_date() {
-	printf '%s%s%s' "$(gray)" "$(date +%Y-%m-%d\ %H:%M:%S)" "$(clr)"
+	printf '%s%s%s' "$(gray)" "$(date '+%Y-%m-%d %H:%M:%S')" "$(clr)"
 }
 
 # Function for error messages
@@ -125,7 +127,7 @@ function warning() {
 
 # Function for debug messages
 function debug() {
-	[ -z "$DEBUG" ] || printf '[%s]:[%s ?? %s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "$1"
+	[[ -z $DEBUG ]] || printf '[%s]:[%sDEBUG%s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "$1"
 }
 
 # Function for operation status
@@ -136,8 +138,13 @@ function debug() {
 #     status 'Run operation' OK
 #     status 'Run operation' FAIL
 function status() {
-	if [[ -z $1 ]] || [[ -z $2 ]]; then
-		error 'status(): not found required parameters!'
+	if [[ -z $1 ]]; then
+		error 'status(): message parameter required!'
+		return 1
+	fi
+
+	if [[ -z $2 ]]; then
+		error 'status(): status parameter required!'
 		return 1
 	fi
 
@@ -147,12 +154,14 @@ function status() {
 
 	if [[ $2 = OK || $2 = 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
-	elif [[ $2 = FAIL || $2 -gt 0 ]]; then
+	elif [[ $2 = FAIL ]] || [[ $2 =~ ^[0-9]+$ && $2 -gt 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
 		result=1
+	else
+		warning "Unknown status: '$2'"
 	fi
 
-	return ${result}
+	return $result
 }
 
 # Function for status on some command in debug mode only
@@ -161,10 +170,15 @@ function status() {
 #     status_dbg 'Debug operation status' OK
 #     status_dbg 'Debug operation status' FAIL
 function status_dbg() {
-	[ -z "$DEBUG" ] && return 0
+	[[ -z $DEBUG ]] && return 0
 
-	if [[ -z $1 ]] || [[ -z $2 ]]; then
-		error 'status_dbg(): not found required parameters!'
+	if [[ -z $1 ]]; then
+		error 'status_dbg(): message parameter required!'
+		return 1
+	fi
+
+	if [[ -z $2 ]]; then
+		error 'status_dbg(): status parameter required!'
 		return 1
 	fi
 
@@ -174,12 +188,14 @@ function status_dbg() {
 
 	if [[ $2 = OK || $2 = 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "$1"
-	elif [[ $2 = FAIL || $2 -gt 0 ]]; then
+	elif [[ $2 = FAIL ]] || [[ $2 =~ ^[0-9]+$ && $2 -gt 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$err_label" "$1"
 		result=1
+	else
+		warning "Unknown status: '$2'"
 	fi
 
-	return ${result}
+	return $result
 }
 
 # Function for checking script dependencies
@@ -188,15 +204,15 @@ function status_dbg() {
 #     check_dependencies python date curl || exit 1
 function check_dependencies() {
 	local result=0
-	local code
+	local code cmd
 
 	for cmd in "${@}"; do
 		command -v "$cmd" >/dev/null 2>&1
 		code=$?
 
-		status_dbg "DEPENDENCY: $cmd" ${code}
+		status_dbg "DEPENDENCY: $cmd" "$code"
 
-		if [[ ${code} -ne 0 ]]; then
+		if [[ $code -ne 0 ]]; then
 			warning "$(bold)$(blue)$cmd$(clr) command not available"
 			result=1
 		fi
@@ -204,17 +220,17 @@ function check_dependencies() {
 
 	debug "check_dependencies() result: $result"
 
-	return ${result}
+	return $result
 }
 
 # Convert string value to float
 function float() {
-	if [ "$1" = '""' ] || [ -z "$1" ]; then
-		echo 0
+	if [[ $1 = '""' || -z $1 ]]; then
+		printf '0\n'
 		return 0
 	fi
 
-	echo "$1" | sed 's/,/\./' | bc -l
+	printf '%s\n' "$1" | sed 's/,/\./' | bc -l || return 1
 
 	return 0
 }
@@ -224,107 +240,139 @@ function float() {
 # Example:
 #     include reload # load /usr/local/lib/bash/includes/reload.sh
 #     include google/client # load /usr/local/lib/bash/includes/google/client.sh
+#
+#     BASH_HELPERS_INCLUDES=$HOME/lib
+#     include http/parser # load $HOME/lib/http/parser.sh
+#
+# For security reasons paths with '..' not allowed. No dots-anywhere, otherwise returns 1.
 function include() {
-	local result=0
-	local -r includes_dir=/usr/local/lib/bash/includes
-	local -r file="$includes_dir/$1.sh"
-
-	if [[ -f "$file" ]]; then
-		debug "Found file: $file"
-		# shellcheck source=stub.sh
-		. "$file"
-		status_dbg "File included" $?
-	else
-		result=1
+	if [[ -z $1 ]]; then
+		error "include(): empty path"
+		return 1
 	fi
 
-	return ${result}
+	local -r includes_dir="${BASH_HELPERS_INCLUDES:-/usr/local/lib/bash/includes}"
+	local -r file="$includes_dir/$1.sh"
+
+	printf '%s' "$file" | grep -q '\.\.' && {
+		debug "include(): traversal path in: $file"
+		return 1
+	}
+
+	if [[ -r $file ]]; then
+		debug "include(): found file: $file"
+		# shellcheck source=stub.sh
+		. "$file"
+		local rc=$?
+
+		status_dbg "File included" "$rc"
+
+		[[ $rc -ne 0 ]] && return 1
+	else
+		return 1
+	fi
+
+	return 0
 }
 
 # Redefine it in your main script and modify for your needs.
 # Usage:
-#	parse_options ${@}
+#	parse_options "${@}"
 #	PARSE_RESULT=$?
 #
-#	[[ ${PARSE_RESULT} = 1 ]] && exit 1
-#	[[ ${PARSE_RESULT} = 2 ]] && usage_help && exit 2
+#	[[ $PARSE_RESULT = 1 ]] && exit 1
+#	[[ $PARSE_RESULT = 2 ]] && usage_help && exit 2
 #
 # Long arguments (--target=value) example:
+#	local param found long value
 #	while getopts :vhdt:-: param; do
-#		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
+#		if [[ $param = '?' ]]; then
+#			found="-$OPTARG"
+#		elif [[ $param = '-' ]]; then
+#			found="--${OPTARG%%=*}"
+#		else
+#			found="-$param"
+#		fi
 #
 #		debug "Found option '$found'"
 #
-#		case ${param} in
+#		case $param in
 #			v ) print_version; exit 0;;
 #			h ) usage_help; exit 0;;
 #			d ) DEBUG=1;;
 #			t ) TARGET=${OPTARG};;
-#			- ) local param="${OPTARG%%=*}"
-#				local value="${OPTARG#*=}"
-#				case $param in
+#			- ) long="${OPTARG%%=*}"
+#				value="${OPTARG#*=}"
+#				case $long in
 #					version ) print_version; exit 0;;
 #					help    ) usage_help; exit 0;;
 #					debug   ) DEBUG=1;;
 #					target  ) TARGET=${value};;
-#					*       ) warning "Illegal option --$OPTARG"; result=2;;
+#					*       ) warning "Illegal option --$long"; result=2;;
 #				esac;;
 #			* ) warning "Illegal option -$OPTARG"; result=2;;
 #		esac
 #	done
+#
+# After `parse_options "$@"` returns, `OPTIND` points to the first
+# non-option argument. To process your own positional arguments:
+#
+#    parse_options "$@"
+#    shift $((OPTIND-1))
+#
+# Now "$@" contains only positional arguments of your script.
+# It's safe to use $1 and $2 and so on as arguments.
 function parse_options() {
 	local result=0
+	local param found long value
 	OPTIND=1
 
 	while getopts :vhd-: param; do
-		[[ ${param} = '?' ]] && found=${OPTARG} || found=${param}
+		if [[ $param = '?' ]]; then
+			found="-$OPTARG"
+		elif [[ $param = '-' ]]; then
+			found="--${OPTARG%%=*}"
+		else
+			found="-$param"
+		fi
 
 		debug "Found option '$found'"
 
-		case ${param} in
+		case $param in
 			v ) print_version; exit 0;;
 			h ) usage_help; exit 0;;
 			d ) DEBUG=1;;
-			- ) local param="${OPTARG%%=*}"
-				local value="${OPTARG#*=}"
-				case $param in
+			- ) long="${OPTARG%%=*}"
+				value="${OPTARG#*=}"
+				case $long in
 					version ) print_version; exit 0;;
 					help    ) usage_help; exit 0;;
 					debug   ) DEBUG=1;;
-					*       ) warning "Illegal option --$OPTARG"; result=2;;
+					*       ) warning "Illegal option --$long"; result=2;;
 				esac;;
 			* ) warning "Illegal option -$OPTARG"; result=2;;
 		esac
 	done
 
-	shift $((OPTIND-1)) # remove parsed options and args from $@ list
-
 	debug "Variable DEBUG: '$DEBUG'"
 	debug "parse_options() result: $result"
 
-	return ${result}
+	return $result
 }
 
 # Function for getting bool values from git config
 # Echoes 1 on ok_msg
 # Usage:
-#	git_config_bool $PARAM $PROJECT_PATH
+#	git_config_bool "$PARAM" "$PROJECT_PATH"
 function git_config_bool() {
-	local path=
-	local result=0
+	local -a git_args=()
 	local value
 
-	if [[ -n $2 ]]; then
-		path="-C $2"
-	fi
+	[[ -n ${2:-} ]] && git_args=(-C "$2")
 
-	# Do not quote $path variable because git will get exactly "-C /path/to/cfg" parameter
-	# shellcheck disable=SC2086
-	value=$(git $path config --bool "$1")
+	value=$(git "${git_args[@]}" config --bool "$1") || return $?
 
-	if [[ ${value} == true ]]; then
-		echo 1
-	fi
+	[[ $value = true ]] && printf '1\n'
 
-	return ${result}
+	return 0
 }
