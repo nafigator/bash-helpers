@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.6-rc-2
+readonly BASH_HELPERS_VERSION=1.1.6
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 

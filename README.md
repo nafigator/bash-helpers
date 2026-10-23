@@ -143,7 +143,7 @@ composer require nafigator/bash-helpers
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.5/src/bash-helpers.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.6/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```

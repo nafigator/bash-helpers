@@ -4,10 +4,28 @@ permissions:
   contents: read
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
+      draft:
+        description: 'Create draft release'
+        type: boolean
+        default: false
   push:
     branches: [ "main" ]
-  schedule:
-    - cron: '29 3 * * *'
+    tags:
+      - "*.*.*"
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.tag }}
+  DRAFT: ${{ inputs.draft || 'false' }}
 
 jobs:
   spelling:
@@ -18,3 +36,53 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Spell Check Repo
         uses: crate-ci/typos@bee27e3a4fd1ea2111cf90ab89cd076c870fce14 # v1.48.0
+
+  release:
+    needs: spelling
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Crate sha256sum
+        with:
+          path: artifacts
+        run: |
+          cp ../src/bash-helpers.sh .
+          sha256sum bash-helpers.sh > SHA256SUMS.txt
+
+      - name: Create release and upload packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FLAGS=(--latest)
+          [[ $DRAFT = true ]] && FLAGS=(--draft)
+
+          TITLE="${TAG}"
+          [[ $DRAFT = true ]] && TITLE="[DRAFT] $TITLE"
+
+          ls -lh artifacts/
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            [[ $DRAFT = true ]] && {
+              echo "Draft release. Skip artifacts update."
+              exit 0
+            }
+
+            echo "Release $TAG already exists - uploading files"
+            gh release upload "$TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --clobber \
+              artifacts/*.*
+          else
+            echo "Creating release $TAG"
+            gh release create "$TAG" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target ${{ github.sha }} \
+              --title "$TITLE" \
+              "${FLAGS[@]}" \
+              artifacts/*.*
+          fi
