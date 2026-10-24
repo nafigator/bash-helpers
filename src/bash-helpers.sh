@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.6
+readonly BASH_HELPERS_VERSION=1.1.7-rc-1
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
@@ -34,49 +34,62 @@ fi
 
 [[ -z ${DEBUG+x} ]] && DEBUG=
 
+# Escape sequence variables
+readonly _E_BLACK=$'\e[30m'
+readonly _E_RED=$'\e[31m'
+readonly _E_GREEN=$'\e[32m'
+readonly _E_YELLOW=$'\e[33m'
+readonly _E_BLUE=$'\e[34m'
+readonly _E_MAGENTA=$'\e[35m'
+readonly _E_CYAN=$'\e[36m'
+readonly _E_WHITE=$'\e[37m'
+readonly _E_GRAY=$'\e[38;5;242m'
+readonly _E_BOLD=$'\e[1m'
+readonly _E_CLR=$'\e[0m'
+
 # https://en.wikipedia.org/wiki/ANSI_escape_code
 function black() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[30m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_BLACK"
 }
 
 function red() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[31m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_RED"
 }
 
 function green() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[32m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_GREEN"
 }
 
 function yellow() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[33m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_YELLOW"
 }
 
 function blue() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[34m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_BLUE"
 }
 
 function magenta() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[35m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_MAGENTA"
 }
 
 function cyan() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[36m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_CYAN"
 }
 
 function white() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[37m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_WHITE"
 }
 
 function gray() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[38;5;242m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_GRAY"
 }
 
 function bold() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[1m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_BOLD"
 }
 
 function clr() {
-	[[ -z ${INTERACTIVE:-} ]] || printf "\e[0m"
+	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_CLR"
 }
 
 # This variable should be defined in your main script
@@ -107,27 +120,46 @@ function print_version() {
 
 # Function for datetime output
 function format_date() {
-	printf '%s%s%s' "$(gray)" "$(date '+%Y-%m-%d %H:%M:%S')" "$(clr)"
+	printf '%s%s%s' \
+		"${INTERACTIVE:+$_E_GRAY}" \
+		"$(date '+%Y-%m-%d %H:%M:%S')" \
+		"${INTERACTIVE:+$_E_CLR}"
 }
 
 # Function for error messages
 function error() {
-	printf '[%s]:[%sERROR%s] %s\n' "$(format_date)" "$(red)" "$(clr)" "${1:-}" >&2
+	printf '[%s]:[%sERROR%s] %s\n' \
+		"$(format_date)" \
+		"${INTERACTIVE:+$_E_RED}" \
+		"${INTERACTIVE:+$_E_CLR}" \
+		"${1:-}" >&2
 }
 
 # Function for informational messages
 function inform() {
-	printf '[%s]:[%sINFO%s] %s\n' "$(format_date)" "$(green)" "$(clr)" "${1:-}"
+	printf '[%s]:[%sINFO%s] %s\n' \
+		"$(format_date)" \
+		"${INTERACTIVE:+$_E_GREEN}" \
+		"${INTERACTIVE:+$_E_CLR}" \
+		"${1:-}"
 }
 
 # Function for warning messages
 function warning() {
-	printf '[%s]:[%sWARN%s] %s\n' "$(format_date)" "$(yellow)" "$(clr)" "${1:-}" >&2
+	printf '[%s]:[%sWARN%s] %s\n' \
+		"$(format_date)" \
+		"${INTERACTIVE:+$_E_YELLOW}" \
+		"${INTERACTIVE:+$_E_CLR}" \
+		"${1:-}" >&2
 }
 
 # Function for debug messages
 function debug() {
-	[[ -z ${DEBUG:-} ]] || printf '[%s]:[%sDEBUG%s] %s\n' "$(format_date)" "$(gray)" "$(clr)" "${1:-}"
+	[[ -z ${DEBUG:-} ]] || printf '[%s]:[%sDEBUG%s] %s\n' \
+		"$(format_date)" \
+		"${INTERACTIVE:+$_E_GRAY}" \
+		"${INTERACTIVE:+$_E_CLR}" \
+		"${1:-}"
 }
 
 # Function for operation status
@@ -149,8 +181,8 @@ function status() {
 	fi
 
 	local result=0
-	local -r ok_label="$(green) OK $(clr)"
-	local -r err_label="$(red)FAIL$(clr)"
+	local -r ok_label="${INTERACTIVE:+$_E_GREEN} OK ${INTERACTIVE:+$_E_CLR}"
+	local -r err_label="${INTERACTIVE:+$_E_RED}FAIL${INTERACTIVE:+$_E_CLR}"
 
 	if [[ ${2:-} = OK || ${2:-} = 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "${1:-}"
@@ -183,8 +215,8 @@ function status_dbg() {
 	fi
 
 	local result=0
-	local -r ok_label="$(green) ++ $(clr)"
-	local -r err_label="$(red) -- $(clr)"
+	local -r ok_label="${INTERACTIVE:+$_E_GREEN} ++ ${INTERACTIVE:+$_E_CLR}"
+	local -r err_label="${INTERACTIVE:+$_E_RED} -- ${INTERACTIVE:+$_E_CLR}"
 
 	if [[ ${2:-} = OK || ${2:-} = 0 ]]; then
 		printf '[%s]:[%s] %s\n' "$(format_date)" "$ok_label" "${1:-}"
@@ -213,7 +245,7 @@ function check_dependencies() {
 		status_dbg "DEPENDENCY: $cmd" "$code"
 
 		if [[ $code -ne 0 ]]; then
-			warning "$(bold)$(blue)$cmd$(clr) command not available"
+			warning "${INTERACTIVE:+$_E_BOLD}${INTERACTIVE:+$_E_BLUE}${cmd}${INTERACTIVE:+$_E_CLR} command not available"
 			result=1
 		fi
 	done
