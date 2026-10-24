@@ -10,15 +10,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 * **Built-in CLI.** Out of box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
   `example.sh -h`
-
   ![Help example][Help example img]
 
   `example.sh -v`
-
   ![Version example][Version example img]
 
   `example.sh -dv`
-
   ![Debug example][Debug example img]
 * **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`
 
