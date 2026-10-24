@@ -320,10 +320,8 @@ function include() {
 
 # Redefine it in your main script and modify for your needs.
 # Usage:
-#	parse_options "${@}"
+#	parse_options "$@"
 #	PARSE_RESULT=$?
-#
-#	[[ $PARSE_RESULT = 1 ]] && exit 1
 #	[[ $PARSE_RESULT = 2 ]] && usage_help && exit 2
 #
 # Long arguments (--target=value) example:

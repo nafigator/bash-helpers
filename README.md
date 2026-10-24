@@ -1,6 +1,7 @@
-<a id="readme-top"></a>
 # bash-helpers
 [![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
+
+**Collection of handy functions for usage in Bash scripts**
 
 ## Features
 - [Built-in CLI](#built-in-cli)
@@ -14,8 +15,7 @@
 - [Debug messages and statuses](#debug-messages-and-statuses)
 - [Idempotent source](#idempotent-source)
 
-
-#### Built-in CLI
+### Built-in CLI
 Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
 `example.sh -h`\
@@ -26,13 +26,13 @@ Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
 `example.sh --debug -v`\
 ![Debug example][Debug example img]
-#### Pure bash core
+### Pure bash core
 No `awk`/`sed`/`jq` needed for colors, messages, statuses, or option parsing. Works in minimal images (`alpine`, `debian:slim`, `distroless`).
-#### Strict-mode safe
+### Strict-mode safe
 `set -eu` in your script does not break the library or your error handling.
-#### Runs on bash 3.2+
+### Runs on bash 3.2+
 Same code works on stock macOS (`/bin/bash` 3.2), Linux, and BSD - no `brew install bash` or shebang surgery needed.
-#### Color and formatting functions
+### Color and formatting functions
 `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`.
 
 <details>
@@ -44,7 +44,7 @@ printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
 ![Colors definition][Colors definition img]
 </details>
 
-#### Formatted messages
+### Formatted messages
 `error`, `inform`, `warning`, `debug`, `status`, `status_dbg`.
 
 <details>
@@ -75,7 +75,7 @@ status 'Check /usr/local/bin dir' $?
 
 </details>
 
-#### Checking dependencies
+### Checking dependencies
 
 <details>
 <summary>Example</summary>
@@ -86,7 +86,7 @@ check_dependencies yarn rust || exit 1
 ![Check dependencies][Check dependencies img]
 </details>
 
-#### Libs including
+### Libs including
 
 <details>
 <summary>Examples</summary>
@@ -98,7 +98,7 @@ include logger; status 'Logger including' $? || exit 1
 ```
 </details>
 
-#### Debug messages and statuses
+### Debug messages and statuses
 
 <details>
 <summary>Example</summary>
@@ -116,7 +116,7 @@ status_dbg 'Visible because of DEBUG variable' $?
 ![Debug messages][Debug messages img]
 </details>
 
-#### Idempotent source
+### Idempotent source
 Safe to source multiple times; existing function overrides are preserved.
 
 ## Installation
@@ -282,7 +282,7 @@ inform 'Bash helpers ready!'
 VERSION=0.1.0
 . /usr/local/lib/bash/includes/bash-helpers.sh
 
-parse_options "${@}"
+parse_options "$@"
 PARSE_RESULT=$?
 [[ $PARSE_RESULT = 2 ]] && usage_help && exit 2
 ```
@@ -308,7 +308,7 @@ The library is configured via environment variables and by overriding a few func
 | `DATETIME_FORMAT` | '+%Y-%m-%d %H:%M:%S'                    | Datetime format. Applied inside `format_date()`. Can be redefined in your main script. See `man date`. |
 
 <details>
-  <summary>Examples:</summary>
+<summary>Examples</summary>
 
 ```bash
 # Redefine to disable colors
@@ -326,9 +326,11 @@ DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'
 </details>
 
 > [!NOTE]
-> - `INTERACTIVE`, `DEBUG`, and `DATETIME_FORMAT` are read at call time. You can change them during execution.
-> - `VERSION` falls back to `undefined` if not set before `print_version()`.
-> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty. Being a generic name, it may conflict with other tools; redefine `format_date()` if it does.
+> `INTERACTIVE`, `DEBUG`, and `DATETIME_FORMAT` are read at call time. You can change them during execution.
+>
+> `VERSION` falls back to `undefined` if not set before `print_version()`.
+>
+> `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty. Being a generic name, it may conflict with other tools; redefine `format_date()` if it does.
 
 ### Overriding functions
 
