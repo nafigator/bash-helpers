@@ -7,22 +7,11 @@
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## Features:
-* **Defines human-readable functions for colors and formatting:**
-	- black()
-	- red()
-	- green()
-	- yellow()
-	- blue()
-	- magenta()
-	- cyan()
-	- white()
-	- gray()
-	- bold()
-	- clr()
+* **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`
 
   Examples:
   ```bash
-  printf "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
+  printf '%s\n' "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
   ```
   ![Colors definition][Colors definition img]
 > [!TIP]
@@ -81,7 +70,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## Installation
 
-1. Put bash libs into `/usr/local/lib/bash/includes` dir.
+1. Put bash-helpers.sh into `/usr/local/lib/bash/includes` dir.
 2. Source `bash-helpers.sh` in executable script:
    ```bash
    . /usr/local/lib/bash/includes/bash-helpers.sh
@@ -97,7 +86,7 @@ sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/naf
 </details>
 
 <details>
-  <summary>Via functions (fast)</summary>
+  <summary>Via functions (simple)</summary>
 
 ```bash
 #!/usr/bin/env bash
@@ -163,7 +152,7 @@ download_bash_helpers() {
 		rm -rf "$tmpdir"; return 1
 	}
 
-	# For linux sha256sum
+	# For Linux sha256sum
 	( cd "$tmpdir" || exit 1; printf '%s\n' "$sum" | sha256sum -c --status ) || {
 		echo 'Check bash-helpers sum failed' >&2
 		rm -rf "$tmpdir"; return 1
@@ -234,7 +223,11 @@ inform 'Bash helpers ready!'
 </details>
 
 > [!IMPORTANT]
-> Source the library before any `cd`. The script path is resolved at source time via `realpath`.
+> Source before any `cd`. The script path is resolved at source time via `realpath`.
+>
+> Re-sourcing is safe; overrides between sources are preserved.
+>
+> Works under `set -eu`. Call `check_dependencies ... || exit 1` so it reports missing tools before exiting.
 
 ## Configuration
 
@@ -269,15 +262,14 @@ DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'
 </details>
 
 > [!NOTE]
-> - `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
-> - If `VERSION` is not set before calling `print_version()`, it falls back to `undefined`.
-> - Color functions (`red`, `bold`, etc.) respect `NO_COLOR` and `INTERACTIVE` automatically.
-> - `DATETIME_FORMAT` is read at call time. If unset or empty, `'+%Y-%m-%d %H:%M:%S'` is used.
-> - `DATETIME_FORMAT` is a generic name. If your script or another sourced library uses it for a different purpose, override explicitly or redefine `format_date()`.
+> - `INTERACTIVE`, `DEBUG`, and `DATETIME_FORMAT` are read at call time. You can change them during execution.
+> - `VERSION` falls back to `undefined` if not set before `print_version()`.
+> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty.
+> - `DATETIME_FORMAT` is a generic name that may conflict with other tools; redefine `format_date()` if it does.
 
 ### Overriding functions
 
-Functions are meant to be optionally redefined in your script to match your CLI:
+The following functions can be redefined:
 
 - `usage_help()` - prints help text. Redefine to show your own options.
 - `print_version()` - prints version. Redefine if you need custom output (it uses `$VERSION` and `$BASH_HELPERS_VERSION` by default).
@@ -316,9 +308,12 @@ If you need a different location, use `BASH_HELPERS_INCLUDES` or redefine `inclu
 | `bash`            | >= 3.2  | local -r, printf, [[ ]], getopts and other 3.x features used across helpers                                                            |
 | `POSIX utilities` | -       | `printf`, `date`, `realpath`, `basename` - used by `format_date`, `inform`, `warning`, `error`, `debug`, `usage_help`, `print_version` |
 
+> [!NOTE]
+> Works on Linux, macOS, BSD (WSL/MSYS2 on Windows).
+
 ### Optional
 
-Installed only if you use the corresponding function.
+Required only when you call the corresponding function.
 
 | Dependency | Used by                              | Purpose                                               |
 |------------|--------------------------------------|-------------------------------------------------------|
@@ -350,11 +345,6 @@ Use the bundled helper to verify dependencies before running your script:
 check_dependencies curl jq || exit 1
 ```
 
-> [!NOTE]
-> - All helpers assume a POSIX-like environment (Linux, macOS, BSD). Windows is supported only via WSL or MSYS2/Cygwin.
-> - `bc` is not installed by default on minimal images (e.g. `alpine`, `debian:slim`). Install it with `apk add bc` / `apt install bc` if you rely on `float()`.
-> - `INTERACTIVE` and `DEBUG` are **not** external dependencies - they are environment variables consumed by the library. See [Configuration](#configuration)
-
 ## Message statuses
 
 	[ OK ] - success status
@@ -364,9 +354,7 @@ check_dependencies curl jq || exit 1
 	[ -- ] - fail debug status
 
 ## Versioning
-This software follows *"Semantic Versioning"* specifications. All function signatures declared as public API.
-
-Read more on [SemVer.org](http://semver.org).
+[Semantic Versioning](https://semver.org). Function signatures are part of the public API.
 
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg

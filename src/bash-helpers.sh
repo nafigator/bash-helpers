@@ -20,11 +20,12 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-# shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.7
+# Guard against double source
+[[ -n ${_BASH_HELPERS_LOADED:-} ]] && return 0
+readonly _BASH_HELPERS_LOADED=1
 
-# VERSION variable should be defined in your main script
-# VERSION=1.0.0
+# shellcheck disable=SC2034
+readonly BASH_HELPERS_VERSION=1.1.8-rc-1
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
@@ -113,6 +114,8 @@ function usage_help() {
 
 # Function for handling version flags.
 # If needed redefine and modify for your needs.
+# VERSION variable should be defined in your main script:
+#   VERSION=1.0.0
 function print_version() {
 	printf '%s %s\n' "$(basename "$BASH_HELPERS_SCRIPT_PATH")" "$(bold)${VERSION:-undefined}$(clr)"
 	printf 'bash-helpers.sh %s\n\n' "$(bold)${BASH_HELPERS_VERSION}$(clr)"
