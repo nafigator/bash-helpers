@@ -7,17 +7,23 @@
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## Features:
+* **Built-in CLI.** Out of box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
+
+  `example.sh -h`\
+  ![Help example][Help example img]
+
+  `example.sh --version`\
+  ![Version example][Version example img]
+
+  `example.sh --debug -v`\
+  ![Debug example][Debug example img]
 * **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`
 
   Examples:
   ```bash
-  printf '%s\n' "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
+  printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
   ```
   ![Colors definition][Colors definition img]
-> [!TIP]
-> For logging purpose colors may be disabled by global `NO_COLOR` or `INTERACTIVE` variable:
-> `NO_COLOR=1`
-> `INTERACTIVE=`
 * **Functions for nicely formatted messages `error`, `inform`, `warning`, `debug`**
 
   Examples:
@@ -30,7 +36,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   ![Messages formatting][Messages formatting img]
 * **Libs including.**
 
-  Example:
+  Examples:
   ```bash
   include google/client || exit 1
   include mysql/query-builder || exit 1
@@ -38,7 +44,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   ```
 * **Status messages.**
 
-  Example:
+  Examples:
   ```bash
   test -d /usr/local/nonexistent
   status 'Check /usr/local/nonexistent dir' $?
@@ -55,7 +61,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   ![Check dependencies][Check dependencies img]
 * **Debug messages and statuses.**
 
-  Example:
+  Examples:
   ```bash
   debug 'This message is hidden'
   status_dbg 'This status is hidden' $?
@@ -67,7 +73,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   status_dbg 'Visible because of DEBUG variable' $?
   ```
   ![Debug messages][Debug messages img]
-
 ## Installation
 
 1. Put bash-helpers.sh into `/usr/local/lib/bash/includes` dir.
@@ -84,7 +89,6 @@ sudo mkdir -p /usr/local/lib/bash/includes
 sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh
 ```
 </details>
-
 <details>
   <summary>Via functions (simple)</summary>
 
@@ -115,7 +119,6 @@ init_bash_helpers() {
 init_bash_helpers || exit 1
 ```
 </details>
-
 <details>
   <summary>Via functions (safe)</summary>
 
@@ -187,7 +190,6 @@ init_bash_helpers() {
 init_bash_helpers || exit 1
 ```
 </details>
-
 <details>
   <summary>Via composer</summary>
 
@@ -209,7 +211,6 @@ source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1
 inform 'Bash helpers ready!'
 ```
 </details>
-
 <details>
   <summary>Preinstalled</summary>
 
@@ -264,8 +265,7 @@ DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'
 > [!NOTE]
 > - `INTERACTIVE`, `DEBUG`, and `DATETIME_FORMAT` are read at call time. You can change them during execution.
 > - `VERSION` falls back to `undefined` if not set before `print_version()`.
-> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty.
-> - `DATETIME_FORMAT` is a generic name that may conflict with other tools; redefine `format_date()` if it does.
+> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty. Being a generic name, it may conflict with other tools; redefine `format_date()` if it does.
 
 ### Overriding functions
 
@@ -366,8 +366,11 @@ check_dependencies curl jq || exit 1
 [License src]: https://tldrlegal.com/license/mit-license
 [Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-teal.svg
 [Versioning src]: https://semver.org
-[Colors definition img]: .images/colors-definition.jpg
-[Messages formatting img]: .images/messages-formatting.jpg
-[Status messages img]: .images/status-messages.jpg
-[Check dependencies img]: .images/check-dependencies.jpg
-[Debug messages img]: .images/debug-messages.jpg
+[Help example img]: .images/help-example.png
+[Version example img]: .images/version-example.png
+[Debug example img]: .images/debug-example.png
+[Colors definition img]: .images/colors-definition.png
+[Messages formatting img]: .images/messages-formatting.png
+[Status messages img]: .images/status-messages.png
+[Check dependencies img]: .images/check-dependencies.png
+[Debug messages img]: .images/debug-messages.png
