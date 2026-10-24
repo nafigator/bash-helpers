@@ -4,15 +4,15 @@ Thanks for considering a contribution to `bash-helpers`.
 
 ## Before you start
 
-- Check [open issues](https://github.com/nafigator/bash-helpers/issues) and [pull requests](https://github.com/nafigator/bash-helpers/pulls) — maybe the topic is already discussed.
+- Check [open issues](https://github.com/nafigator/bash-helpers/issues) and [pull requests](https://github.com/nafigator/bash-helpers/pulls) - maybe the topic is already discussed.
 - For significant changes, open an issue first to agree on the approach.
 - For security issues, do **not** open a public issue. See [SECURITY.md](SECURITY.md).
 
 ## Requirements
 
-- Bash 3.2+ (target environment — see README → Dependencies).
+- Bash 3.2+ (target environment - see README -> Dependencies).
 - [`shellcheck`](https://www.shellcheck.net/) for static analysis.
-- `git` with commit signing optional.
+- `git` (commit signing is optional).
 
 ## Development setup
 
@@ -49,10 +49,10 @@ bash /tmp/try.sh
 - Quote expansions: `"$var"`, `"${arr[@]}"`.
 - Prefer `[[ ]]` over `[ ]` in conditionals.
 - Prefer `printf` over `echo` for anything non-trivial.
-- Return meaningful exit codes: `0` — success, non-zero — failure.
-- Do not break existing public function signatures. README declares all function signatures as public API (see Versioning).
+- Return meaningful exit codes: `0` - success, non-zero - failure.
+- Do not break existing public function signatures. README treats all function signatures as public API (see Versioning).
 - Keep user-facing messages in English.
-- Avoid new external dependencies. If a new dependency is unavoidable, document it in README → Dependencies.
+- Avoid new external dependencies. If a new dependency is unavoidable, document it in README -> Dependencies.
 
 ## Style
 
@@ -68,9 +68,9 @@ This project follows [Conventional Commits](https://www.conventionalcommits.org/
 ```
 <type>(<scope>): <short summary>
 
-[optional body]
+<optional body>
 
-[optional footer(s)]
+<optional footer(s)>
 ```
 
 Common types:
@@ -106,7 +106,7 @@ Rules:
    git checkout -b feat/my-change
    ```
 2. Make your change. Keep the diff focused.
-3. Run `bash -n` and `shellcheck` on the file — CI will run them too.
+3. Run `bash -n` and `shellcheck` on the file - CI will run them too.
 4. Update README if you add/change/remove a public function, dependency, or configuration variable.
 5. Commit using Conventional Commits.
 6. Push and open a PR against `main`. Fill in the description: what, why, how to test.
@@ -125,7 +125,7 @@ PR checklist:
 
 - Maintainers review within a few days.
 - Address review comments with new commits (do not force-push during review unless asked).
-- Once approved, the PR is squash-merged or merged with a merge commit — maintainer's choice.
+- Once approved, the PR is squash-merged or merged with a merge commit - maintainer's choice.
 
 ## License
 
