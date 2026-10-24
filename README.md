@@ -92,7 +92,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ```bash
 sudo mkdir -p /usr/local/lib/bash/includes
-sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubusercontent.com/nafigator/bash-helpers/master/src/bash-helpers.sh
+sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh
 ```
 </details>
 
@@ -102,7 +102,7 @@ sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://raw.githubuser
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/bash-helpers.sh"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -133,8 +133,8 @@ init_bash_helpers || exit 1
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/bash-helpers.sh"
-readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.6/sha256sum.txt"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh"
+readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/sha256sum.txt"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -215,7 +215,7 @@ composer require nafigator/bash-helpers
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.6/src/bash-helpers.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.7/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```
@@ -242,15 +242,16 @@ The library is configured via environment variables and by overriding a few func
 
 ### Environment variables
 
-| Variable                        | Default                                 | Description                                                                                        |
-|---------------------------------|-----------------------------------------|----------------------------------------------------------------------------------------------------|
-| `NO_COLOR`                      | unset                                   | Disables ANSI color output. Has priority over `INTERACTIVE`. See [no-color](https://no-color.org). |
-| `INTERACTIVE`                   | `1` if stdout is a TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs).        |
-| `DEBUG`                         | unset                                   | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`).          |
-| `VERSION`                       | unset                                   | Your script version. Used by `print_version()`. Define it in your main script.                     |
-| `$BASH_HELPERS_DATETIME_FORMAT` | '+%F %T'                                | Datetime format. Used by `format_date()`. Can be redefined in your main script.                    |
+| Variable          | Default                                 | Description                                                                                            |
+|-------------------|-----------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `NO_COLOR`        | unset                                   | Disables ANSI color output. Has priority over `INTERACTIVE`. See [no-color](https://no-color.org).     |
+| `INTERACTIVE`     | `1` if stdout is a TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs).            |
+| `DEBUG`           | unset                                   | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`).              |
+| `VERSION`         | unset                                   | Your script version. Used by `print_version()`. Define it in your main script.                         |
+| `DATETIME_FORMAT` | '+%Y-%m-%d %H:%M:%S'                    | Datetime format. Applied inside `format_date()`. Can be redefined in your main script. See `man date`. |
 
-Examples:
+<details>
+  <summary>Examples:</summary>
 
 ```bash
 # Redefine to disable colors
@@ -261,7 +262,18 @@ DEBUG=1
 
 # Redefine version in your script for print_version
 VERSION=1.2.3
+
+# Redefine datetime format for RFC3339 structured logs
+DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'
 ```
+</details>
+
+> [!NOTE]
+> - `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
+> - If `VERSION` is not set before calling `print_version()`, it falls back to `undefined`.
+> - Color functions (`red`, `bold`, etc.) respect `NO_COLOR` and `INTERACTIVE` automatically.
+> - `DATETIME_FORMAT` is read at call time. If unset or empty, `'+%Y-%m-%d %H:%M:%S'` is used.
+> - `DATETIME_FORMAT` is a generic name. If your script or another sourced library uses it for a different purpose, override explicitly or redefine `format_date()`.
 
 ### Overriding functions
 
@@ -294,11 +306,6 @@ By default `include()` loads files from a fixed path:
 ```
 
 If you need a different location, use `BASH_HELPERS_INCLUDES` or redefine `include()` in your script.
-
-> [!NOTE]
-> - `INTERACTIVE` and `DEBUG` are read at call time, so you can change them during script execution.
-> - If `VERSION` is not set before calling `print_version()`, it falls back to `undefined`.
-> - Color functions (`red`, `bold`, etc.) respect `NO_COLOR` and `INTERACTIVE` automatically.
 
 ## Dependencies
 

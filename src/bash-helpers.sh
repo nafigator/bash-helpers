@@ -21,15 +21,12 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.7-rc-2
+readonly BASH_HELPERS_VERSION=1.1.7
+
+# VERSION variable should be defined in your main script
+# VERSION=1.0.0
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
-
-# This variable can be defined in your main script for custom datetime format.
-# Example:
-#	BASH_HELPERS_DATETIME_FORMAT='+%F %T.%N'
-#	[2026-10-24 06:39:46.003020345]:[INFO] Time with nanoseconds
-BASH_HELPERS_DATETIME_FORMAT='+%F %T'
 
 # Handle NO_COLOR. See https://no-color.org
 if [[ -n ${NO_COLOR:-} ]]; then
@@ -98,9 +95,6 @@ function clr() {
 	[[ -z ${INTERACTIVE:-} ]] || printf '%s' "$_E_CLR"
 }
 
-# This variable should be defined in your main script
-# VERSION=1.0.0
-
 # Function for handling help flags.
 # If needed redefine and modify for your needs.
 function usage_help() {
@@ -125,10 +119,14 @@ function print_version() {
 }
 
 # Function for datetime output
+#
+# DATETIME_FORMAT can be set in your script:
+#   DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'   # RFC3339
+# See `man date` for format specifiers.
 function format_date() {
 	printf '%s%s%s' \
 		"${INTERACTIVE:+$_E_GRAY}" \
-		"$(date "$BASH_HELPERS_DATETIME_FORMAT")" \
+		"$(date "${DATETIME_FORMAT:-+%Y-%m-%d %H:%M:%S}")" \
 		"${INTERACTIVE:+$_E_CLR}"
 }
 
