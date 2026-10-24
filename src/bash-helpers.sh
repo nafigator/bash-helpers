@@ -21,9 +21,15 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.7-rc-1
+readonly BASH_HELPERS_VERSION=1.1.7-rc-2
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
+
+# This variable can be defined in your main script for custom datetime format.
+# Example:
+#	BASH_HELPERS_DATETIME_FORMAT='+%F %T.%N'
+#	[2026-10-24 06:39:46.003020345]:[INFO] Time with nanoseconds
+BASH_HELPERS_DATETIME_FORMAT='+%F %T'
 
 # Handle NO_COLOR. See https://no-color.org
 if [[ -n ${NO_COLOR:-} ]]; then
@@ -122,7 +128,7 @@ function print_version() {
 function format_date() {
 	printf '%s%s%s' \
 		"${INTERACTIVE:+$_E_GRAY}" \
-		"$(date '+%Y-%m-%d %H:%M:%S')" \
+		"$(date "$BASH_HELPERS_DATETIME_FORMAT")" \
 		"${INTERACTIVE:+$_E_CLR}"
 }
 

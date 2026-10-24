@@ -242,12 +242,13 @@ The library is configured via environment variables and by overriding a few func
 
 ### Environment variables
 
-| Variable      | Default                                 | Description                                                                                        |
-|---------------|-----------------------------------------|----------------------------------------------------------------------------------------------------|
-| `NO_COLOR`    | unset                                   | Disables ANSI color output. Has priority over `INTERACTIVE`. See [no-color](https://no-color.org). |
-| `INTERACTIVE` | `1` if stdout is a TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs).        |
-| `DEBUG`       | unset                                   | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`).          |
-| `VERSION`     | unset                                   | Your script version. Used by `print_version()`. Define it in your main script.                     |
+| Variable                        | Default                                 | Description                                                                                        |
+|---------------------------------|-----------------------------------------|----------------------------------------------------------------------------------------------------|
+| `NO_COLOR`                      | unset                                   | Disables ANSI color output. Has priority over `INTERACTIVE`. See [no-color](https://no-color.org). |
+| `INTERACTIVE`                   | `1` if stdout is a TTY, otherwise empty | Enables ANSI color output. Set to empty (`INTERACTIVE=`) to disable colors (e.g. for logs).        |
+| `DEBUG`                         | unset                                   | Enables `debug()` and `status_dbg()` output. Set to any non-empty value (e.g. `DEBUG=1`).          |
+| `VERSION`                       | unset                                   | Your script version. Used by `print_version()`. Define it in your main script.                     |
+| `$BASH_HELPERS_DATETIME_FORMAT` | '+%F %T'                                | Datetime format. Used by `format_date()`. Can be redefined in your main script.                    |
 
 Examples:
 
