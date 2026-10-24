@@ -7,7 +7,7 @@
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## Features:
-* **Built-in CLI.** Out of box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
+* **Built-in CLI.** Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
   `example.sh -h`\
   ![Help example][Help example img]
@@ -73,6 +73,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   status_dbg 'Visible because of DEBUG variable' $?
   ```
   ![Debug messages][Debug messages img]
+
 ## Installation
 
 1. Put bash-helpers.sh into `/usr/local/lib/bash/includes` dir.
@@ -89,6 +90,7 @@ sudo mkdir -p /usr/local/lib/bash/includes
 sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh
 ```
 </details>
+
 <details>
   <summary>Via functions (simple)</summary>
 
@@ -119,6 +121,7 @@ init_bash_helpers() {
 init_bash_helpers || exit 1
 ```
 </details>
+
 <details>
   <summary>Via functions (safe)</summary>
 
@@ -190,6 +193,7 @@ init_bash_helpers() {
 init_bash_helpers || exit 1
 ```
 </details>
+
 <details>
   <summary>Via composer</summary>
 
@@ -211,6 +215,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1
 inform 'Bash helpers ready!'
 ```
 </details>
+
 <details>
   <summary>Preinstalled</summary>
 
@@ -220,6 +225,21 @@ inform 'Bash helpers ready!'
 . /usr/local/lib/bash/includes/bash-helpers.sh
 
 inform 'Bash helpers ready!'
+```
+</details>
+
+<details>
+  <summary>Options parsing</summary>
+
+```bash
+#!/usr/bin/env bash
+
+VERSION=0.1.0
+. /usr/local/lib/bash/includes/bash-helpers.sh
+
+parse_options "${@}"
+PARSE_RESULT=$?
+[[ $PARSE_RESULT = 2 ]] && usage_help && exit 2
 ```
 </details>
 

@@ -25,7 +25,7 @@
 readonly _BASH_HELPERS_LOADED=1
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.8-rc-1
+readonly BASH_HELPERS_VERSION=1.1.8-rc-2
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
