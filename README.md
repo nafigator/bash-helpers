@@ -2,107 +2,122 @@
 # bash-helpers
 [![GitHub license][License img]][License src] [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] [![Semantic Versioning][Versioning img]][Versioning src]
 
-**Collection of useful functions for usage in Bash scripts**
+## Features
+- [Built-in CLI](#built-in-cli)
+- [Pure bash core](#pure-bash-core)
+- [Strict-mode safe](#strict-mode-safe)
+- [Runs on bash 3.2+](#runs-on-bash-32)
+- [Color and formatting functions](#color-and-formatting-functions)
+- [Formatted messages](#formatted-messages)
+- [Checking dependencies](#checking-dependencies)
+- [Libs including](#libs-including)
+- [Debug messages and statuses](#debug-messages-and-statuses)
+- [Idempotent source](#idempotent-source)
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
-## Features:
-* **Built-in CLI.** Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
+#### Built-in CLI
+Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
-  `example.sh -h`\
-  ![Help example][Help example img]
+`example.sh -h`\
+![Help example][Help example img]
 
-  `example.sh --version`\
-  ![Version example][Version example img]
+`example.sh --version`\
+![Version example][Version example img]
 
-  `example.sh --debug -v`\
-  ![Debug example][Debug example img]
-* **Pure bash core.** No `awk`/`sed`/`jq` needed for colors, messages, statuses, or option parsing. Works in minimal images (`alpine`, `debian:slim`, `distroless`).
-* **Strict-mode safe.** `set -eu` in your script does not break the library or your error handling.
-* **Runs on bash 3.2+.** Same code works on stock macOS (`/bin/bash` 3.2), Linux, and BSD - no `brew install bash` or shebang surgery needed.
-* **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`.
+`example.sh --debug -v`\
+![Debug example][Debug example img]
+#### Pure bash core
+No `awk`/`sed`/`jq` needed for colors, messages, statuses, or option parsing. Works in minimal images (`alpine`, `debian:slim`, `distroless`).
+#### Strict-mode safe
+`set -eu` in your script does not break the library or your error handling.
+#### Runs on bash 3.2+
+Same code works on stock macOS (`/bin/bash` 3.2), Linux, and BSD - no `brew install bash` or shebang surgery needed.
+#### Color and formatting functions
+`black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`.
 
-  <details>
-  <summary>Example</summary>
+<details>
+<summary>Example</summary>
 
-  ```bash
-  printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
-  ```
-  ![Colors definition][Colors definition img]
-  </details>
+```bash
+printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
+```
+![Colors definition][Colors definition img]
+</details>
 
-* **Functions for nicely formatted messages** `error`, `inform`, `warning`, `debug`, `status`, `status_dbg`.
+#### Formatted messages
+`error`, `inform`, `warning`, `debug`, `status`, `status_dbg`.
 
-  <details>
-  <summary>Examples</summary>
+<details>
+<summary>Examples</summary>
 
-  ```bash
-  inform 'Script start'
-  warning 'Make backup!'
-  error 'File not found'
-  debug 'Fall back to 0'
-  test -d /usr/local/nonexistent
-  status 'Check /usr/local/nonexistent dir' $?
-  test -d /usr/local/bin
-  status 'Check /usr/local/bin dir' $?
-  ```
-  ![Messages formatting][Messages formatting img]
+```bash
+inform 'Script start'
+warning 'Make backup!'
+error 'File not found'
+debug 'Fall back to 0'
+test -d /usr/local/nonexistent
+status 'Check /usr/local/nonexistent dir' $?
+test -d /usr/local/bin
+status 'Check /usr/local/bin dir' $?
+```
+![Messages formatting][Messages formatting img]
 
-  ```bash
-  [ERROR] - error message
-  [DEBUG] - debug message
-  [INFO] - info message
-  [WARN] - warning message
-  [ OK ] - success status
-  [FAIL] - fail status
-  [ ++ ] - success debug status
-  [ -- ] - fail debug status
-  ```
+```bash
+[ERROR] - error message
+[DEBUG] - debug message
+[INFO] - info message
+[WARN] - warning message
+[ OK ] - success status
+[FAIL] - fail status
+[ ++ ] - success debug status
+[ -- ] - fail debug status
+```
 
-  </details>
+</details>
 
-* **Checking dependencies.**
+#### Checking dependencies
 
-  <details>
-  <summary>Example</summary>
+<details>
+<summary>Example</summary>
 
-  ```bash
-  check_dependencies yarn rust || exit 1
-  ```
-  ![Check dependencies][Check dependencies img]
-  </details>
+```bash
+check_dependencies yarn rust || exit 1
+```
+![Check dependencies][Check dependencies img]
+</details>
 
-* **Libs including.**
+#### Libs including
 
-  <details>
-  <summary>Examples</summary>
+<details>
+<summary>Examples</summary>
 
-  ```bash
-  include google/client || exit 1
-  include mysql/query-builder || exit 1
-  include logger; status 'Logger including' $? || exit 1
-  ```
-  </details>
+```bash
+include google/client || exit 1
+include mysql/query-builder || exit 1
+include logger; status 'Logger including' $? || exit 1
+```
+</details>
 
-* **Debug messages and statuses.**
+#### Debug messages and statuses
 
-  <details>
-  <summary>Example</summary>
+<details>
+<summary>Example</summary>
 
-  ```bash
-  debug 'This message is hidden'
-  status_dbg 'This status is hidden' $?
-  DEBUG=1
-  debug 'Visible because of DEBUG variable'
-  test -d /nonexists
-  status_dbg 'Visible because of DEBUG variable' $?
-  test -d /var/log
-  status_dbg 'Visible because of DEBUG variable' $?
-  ```
-  ![Debug messages][Debug messages img]
-  </details>
+```bash
+debug 'This message is hidden'
+status_dbg 'This status is hidden' $?
+DEBUG=1
+debug 'Visible because of DEBUG variable'
+test -d /nonexists
+status_dbg 'Visible because of DEBUG variable' $?
+test -d /var/log
+status_dbg 'Visible because of DEBUG variable' $?
+```
+![Debug messages][Debug messages img]
+</details>
 
-* **Idempotent source.** Safe to source multiple times; existing function overrides are preserved.
+#### Idempotent source
+Safe to source multiple times; existing function overrides are preserved.
 
 ## Installation
 

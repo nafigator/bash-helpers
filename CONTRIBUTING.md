@@ -10,7 +10,7 @@ Thanks for considering a contribution to `bash-helpers`.
 
 ## Requirements
 
-- Bash 3.2+ (target environment - see README -> Dependencies).
+- Bash 3.2+ (target environment - see [README -> Dependencies](README.md#dependencies).
 - [`shellcheck`](https://www.shellcheck.net/) for static analysis.
 - `git` (commit signing is optional).
 
