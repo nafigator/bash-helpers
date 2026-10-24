@@ -7,11 +7,24 @@
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
 ## Features:
+* **Built-in CLI.** Out of box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
+
+  `example.sh -h`
+
+  ![Help example][Help example img]
+
+  `example.sh -v`
+
+  ![Version example][Version example img]
+
+  `example.sh -dv`
+
+  ![Debug example][Debug example img]
 * **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`
 
   Examples:
   ```bash
-  printf '%s\n' "$(bold)$(red)ATTENTION$(clr) Save $(cyan)failure$(clr)"
+  printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
   ```
   ![Colors definition][Colors definition img]
 > [!TIP]
@@ -264,8 +277,7 @@ DATETIME_FORMAT='+%Y-%m-%dT%H:%M:%S%z'
 > [!NOTE]
 > - `INTERACTIVE`, `DEBUG`, and `DATETIME_FORMAT` are read at call time. You can change them during execution.
 > - `VERSION` falls back to `undefined` if not set before `print_version()`.
-> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty.
-> - `DATETIME_FORMAT` is a generic name that may conflict with other tools; redefine `format_date()` if it does.
+> - `DATETIME_FORMAT` falls back to `'+%Y-%m-%d %H:%M:%S'` if unset or empty. Being a generic name, it may conflict with other tools; redefine `format_date()` if it does.
 
 ### Overriding functions
 
@@ -366,8 +378,11 @@ check_dependencies curl jq || exit 1
 [License src]: https://tldrlegal.com/license/mit-license
 [Versioning img]: https://img.shields.io/badge/Semantic%20Versioning-2.0.0-teal.svg
 [Versioning src]: https://semver.org
-[Colors definition img]: .images/colors-definition.jpg
-[Messages formatting img]: .images/messages-formatting.jpg
-[Status messages img]: .images/status-messages.jpg
-[Check dependencies img]: .images/check-dependencies.jpg
-[Debug messages img]: .images/debug-messages.jpg
+[Help example img]: .images/help-example.png
+[Version example img]: .images/version-example.png
+[Debug example img]: .images/debug-example.png
+[Colors definition img]: .images/colors-definition.png
+[Messages formatting img]: .images/messages-formatting.png
+[Status messages img]: .images/status-messages.png
+[Check dependencies img]: .images/check-dependencies.png
+[Debug messages img]: .images/debug-messages.png
