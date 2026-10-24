@@ -31,9 +31,11 @@ readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' 
 
 # Handle NO_COLOR. See https://no-color.org
 if [[ -n ${NO_COLOR:-} ]]; then
-  INTERACTIVE=
+	INTERACTIVE=
 elif [[ -z ${INTERACTIVE+x} ]]; then
-  INTERACTIVE=$([[ -t 1 ]] && echo 1)
+	if [[ -t 1 ]]; then
+		INTERACTIVE=1
+	fi
 fi
 
 [[ -z ${DEBUG+x} ]] && DEBUG=
