@@ -17,51 +17,78 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
 
   `example.sh --debug -v`\
   ![Debug example][Debug example img]
-* **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`
+* **Pure bash core.** No `awk`/`sed`/`jq` needed for colors, messages, statuses, or option parsing. Works in minimal images (`alpine`, `debian:slim`, `distroless`).
+* **Strict-mode safe.** `set -eu` in your script does not break the library or your error handling.
+* **Runs on bash 3.2+.** Same code works on stock macOS (`/bin/bash` 3.2), Linux, and BSD - no `brew install bash` or shebang surgery needed.
+* **Color and formatting functions:** `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`.
 
-  Examples:
+  <details>
+  <summary>Example</summary>
+
   ```bash
   printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
   ```
   ![Colors definition][Colors definition img]
-* **Functions for nicely formatted messages `error`, `inform`, `warning`, `debug`**
+  </details>
 
-  Examples:
+* **Functions for nicely formatted messages** `error`, `inform`, `warning`, `debug`, `status`, `status_dbg`.
+
+  <details>
+  <summary>Examples</summary>
+
   ```bash
   inform 'Script start'
   warning 'Make backup!'
   error 'File not found'
   debug 'Fall back to 0'
-  ```
-  ![Messages formatting][Messages formatting img]
-* **Libs including.**
-
-  Examples:
-  ```bash
-  include google/client || exit 1
-  include mysql/query-builder || exit 1
-  include logger; status 'Logger including' $? || exit 1
-  ```
-* **Status messages.**
-
-  Examples:
-  ```bash
   test -d /usr/local/nonexistent
   status 'Check /usr/local/nonexistent dir' $?
   test -d /usr/local/bin
   status 'Check /usr/local/bin dir' $?
   ```
-  ![Status messages][Status messages img]
+  ![Messages formatting][Messages formatting img]
+
+  ```bash
+  [ERROR] - error message
+  [DEBUG] - debug message
+  [INFO] - info message
+  [WARN] - warning message
+  [ OK ] - success status
+  [FAIL] - fail status
+  [ ++ ] - success debug status
+  [ -- ] - fail debug status
+  ```
+
+  </details>
+
 * **Checking dependencies.**
 
-  Example:
+  <details>
+  <summary>Example</summary>
+
   ```bash
   check_dependencies yarn rust || exit 1
   ```
   ![Check dependencies][Check dependencies img]
+  </details>
+
+* **Libs including.**
+
+  <details>
+  <summary>Examples</summary>
+
+  ```bash
+  include google/client || exit 1
+  include mysql/query-builder || exit 1
+  include logger; status 'Logger including' $? || exit 1
+  ```
+  </details>
+
 * **Debug messages and statuses.**
 
-  Examples:
+  <details>
+  <summary>Example</summary>
+
   ```bash
   debug 'This message is hidden'
   status_dbg 'This status is hidden' $?
@@ -73,6 +100,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
   status_dbg 'Visible because of DEBUG variable' $?
   ```
   ![Debug messages][Debug messages img]
+  </details>
+
+* **Idempotent source.** Safe to source multiple times; existing function overrides are preserved.
 
 ## Installation
 
@@ -83,21 +113,21 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and PR guidelines.
    ```
 
 <details>
-  <summary>Example</summary>
+<summary>Example</summary>
 
 ```bash
 sudo mkdir -p /usr/local/lib/bash/includes
-sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh
+sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh
 ```
 </details>
 
 <details>
-  <summary>Via functions (simple)</summary>
+<summary>Via functions (simple)</summary>
 
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -123,13 +153,13 @@ init_bash_helpers || exit 1
 </details>
 
 <details>
-  <summary>Via functions (safe)</summary>
+<summary>Via functions (safe)</summary>
 
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/bash-helpers.sh"
-readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.7/sha256sum.txt"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh"
+readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/sha256sum.txt"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -195,7 +225,7 @@ init_bash_helpers || exit 1
 </details>
 
 <details>
-  <summary>Via composer</summary>
+<summary>Via composer</summary>
 
 ```bash
 composer require nafigator/bash-helpers
@@ -205,19 +235,19 @@ composer require nafigator/bash-helpers
 ## Usage
 
 <details>
-  <summary>Without installation</summary>
+<summary>Without installation</summary>
 
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.7/src/bash-helpers.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.8/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```
 </details>
 
 <details>
-  <summary>Preinstalled</summary>
+<summary>Preinstalled</summary>
 
 ```bash
 #!/usr/bin/env bash
@@ -229,7 +259,7 @@ inform 'Bash helpers ready!'
 </details>
 
 <details>
-  <summary>Options parsing</summary>
+<summary>Options parsing</summary>
 
 ```bash
 #!/usr/bin/env bash
@@ -247,8 +277,6 @@ PARSE_RESULT=$?
 > Source before any `cd`. The script path is resolved at source time via `realpath`.
 >
 > Re-sourcing is safe; overrides between sources are preserved.
->
-> Works under `set -eu`. Call `check_dependencies ... || exit 1` so it reports missing tools before exiting.
 
 ## Configuration
 
@@ -295,7 +323,8 @@ The following functions can be redefined:
 - `print_version()` - prints version. Redefine if you need custom output (it uses `$VERSION` and `$BASH_HELPERS_VERSION` by default).
 - `parse_options()` - parses options. Redefine if you have extended set of options.
 
-Example:
+<details>
+<summary>Examples</summary>
 
 ```bash
 usage_help() {
@@ -308,6 +337,7 @@ print_version() {
   echo "my-script $VERSION"
 }
 ```
+</details>
 
 ### Include directory
 
@@ -364,14 +394,8 @@ Use the bundled helper to verify dependencies before running your script:
 ```bash
 check_dependencies curl jq || exit 1
 ```
-
-## Message statuses
-
-	[ OK ] - success status
-	[FAIL] - fail status
-	[ ?? ] - debug message
-	[ ++ ] - success debug status
-	[ -- ] - fail debug status
+> [!IMPORTANT]
+> Under `set -e`, call `check_dependencies ... || exit 1` so warnings are visible before exit.
 
 ## Versioning
 [Semantic Versioning](https://semver.org). Function signatures are part of the public API.
@@ -391,6 +415,5 @@ check_dependencies curl jq || exit 1
 [Debug example img]: .images/debug-example.png
 [Colors definition img]: .images/colors-definition.png
 [Messages formatting img]: .images/messages-formatting.png
-[Status messages img]: .images/status-messages.png
 [Check dependencies img]: .images/check-dependencies.png
 [Debug messages img]: .images/debug-messages.png

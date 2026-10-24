@@ -25,7 +25,7 @@
 readonly _BASH_HELPERS_LOADED=1
 
 # shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.8-rc-2
+readonly BASH_HELPERS_VERSION=1.1.8
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
@@ -35,6 +35,8 @@ if [[ -n ${NO_COLOR:-} ]]; then
 elif [[ -z ${INTERACTIVE+x} ]]; then
 	if [[ -t 1 ]]; then
 		INTERACTIVE=1
+	else
+		INTERACTIVE=
 	fi
 fi
 
