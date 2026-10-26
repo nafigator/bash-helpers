@@ -202,6 +202,7 @@ function status() {
 		result=1
 	else
 		warning "Unknown status: '${2:-}'"
+		result=2
 	fi
 
 	return $result
@@ -236,6 +237,7 @@ function status_dbg() {
 		result=1
 	else
 		warning "Unknown status: '${2:-}'"
+		result=2
 	fi
 
 	return $result
