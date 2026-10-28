@@ -2,8 +2,8 @@
 
 set -o pipefail
 
-# release v1.1.5
-readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/76a2928/src/bash-helpers.sh"
+# release v1.1.8
+readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/86cd071/src/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -17,7 +17,7 @@ download_bash_helpers() {
 init_bash_helpers() {
 	[[ -r "$HELPERS_LIB" ]] || download_bash_helpers || return 1
 
-	# shellcheck source=/home/alex/.local/lib/bash/includes/bash-helpers.sh
+	# shellcheck source=/stub.sh
 	. "$HELPERS_LIB"
 
 	return 0
