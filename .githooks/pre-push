@@ -1,0 +1,69 @@
+#!/bin/bash
+
+set -o pipefail
+
+# release v1.1.5
+readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/76a2928/src/bash-helpers.sh"
+readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
+readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
+
+download_bash_helpers() {
+	echo 'Installing bash-helpers'
+
+	mkdir -p "$HELPERS_DIR" || return 1
+	curl -fsSL --retry 3 -m 30 -o "$HELPERS_LIB" "$HELPERS_URL" || return 1
+}
+
+init_bash_helpers() {
+	[[ -r "$HELPERS_LIB" ]] || download_bash_helpers || return 1
+
+	# shellcheck source=/home/alex/.local/lib/bash/includes/bash-helpers.sh
+	. "$HELPERS_LIB"
+
+	return 0
+}
+
+init_bash_helpers || exit 1
+
+# shellcheck disable=SC2034 # used by bash-helpers
+readonly INTERACTIVE=1
+
+check_dependencies typos || exit 1
+
+REPO_ROOT=$(git rev-parse --show-toplevel) || exit 1
+CONFIG="$REPO_ROOT/.typos.toml"
+[[ -r "$CONFIG" ]] || {
+	error "Typos config $CONFIG not found or not readable"
+	exit 1
+}
+
+readonly FLAGS=( -c "$CONFIG" "$REPO_ROOT" )
+readonly PIPE_FLAGS=( -c "$CONFIG" - )
+
+# check project typos
+typos "${FLAGS[@]}"
+status 'Project typos' $? || exit 1
+
+# commit typos check
+result=0
+while read -r _ local_sha _ remote_sha; do
+	# branch delete
+	[[ "$local_sha" =~ ^0+$ ]] && continue
+
+	if [[ "$remote_sha" =~ ^0+$ ]]; then
+		range=( "$local_sha" --not --remotes="$1" )
+	else
+		range=( "$remote_sha..$local_sha" )
+	fi
+
+	while IFS= read -r sha; do
+		if ! git log -1 --format=%B "$sha" | typos "${PIPE_FLAGS[@]}"; then
+			error "Typos in commit $sha: $(git log -1 --format=%s "$sha")"
+			result=1
+		fi
+	done < <(git log "${range[@]}" --format=%H)
+done
+
+[[ $result -eq 0 ]] && status "Commit typos" OK
+
+exit $result
