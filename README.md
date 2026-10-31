@@ -132,7 +132,7 @@ Safe to source multiple times; existing function overrides are preserved.
 
 ```bash
 sudo mkdir -p /usr/local/lib/bash/includes
-sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh
+sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/nafigator/bash-helpers/releases/download/1.1.9/bash-helpers.sh
 ```
 </details>
 
@@ -142,7 +142,7 @@ sudo curl -o /usr/local/lib/bash/includes/bash-helpers.sh https://github.com/naf
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.9/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -173,8 +173,8 @@ init_bash_helpers || exit 1
 ```bash
 #!/usr/bin/env bash
 
-readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/bash-helpers.sh"
-readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.8/sha256sum.txt"
+readonly HELPERS_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.9/bash-helpers.sh"
+readonly HELPERS_SUM_URL="https://github.com/nafigator/bash-helpers/releases/download/1.1.9/sha256sum.txt"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
@@ -255,7 +255,7 @@ composer require nafigator/bash-helpers
 ```bash
 #!/usr/bin/env bash
 
-source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.8/src/bash-helpers.sh)
+source <(curl -fsSL https://raw.githubusercontent.com/nafigator/bash-helpers/1.1.9/src/bash-helpers.sh)
 
 inform 'Bash helpers ready!'
 ```

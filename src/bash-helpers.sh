@@ -20,12 +20,12 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
+# shellcheck disable=SC2034
+BASH_HELPERS_VERSION=1.1.9
+
 # Guard against double source
 [[ -n ${_BASH_HELPERS_LOADED:-} ]] && return 0
 readonly _BASH_HELPERS_LOADED=1
-
-# shellcheck disable=SC2034
-readonly BASH_HELPERS_VERSION=1.1.8
 
 readonly BASH_HELPERS_SCRIPT_PATH=$(realpath -e "$0" 2>/dev/null || printf '%s' "$0")
 
