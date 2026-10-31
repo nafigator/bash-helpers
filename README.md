@@ -366,6 +366,10 @@ By default `include()` loads files from a fixed path:
 
 If you need a different location, use `BASH_HELPERS_INCLUDES` or redefine `include()` in your script.
 
+## Update
+Just load new version bash-helpers.sh over current.
+Example of bash-function [`update-bash-helpers`][Update-bash-helpers url].
+
 ## Dependencies
 
 ### Required
@@ -434,3 +438,4 @@ check_dependencies curl jq || exit 1
 [Messages formatting img]: .images/messages-formatting.png
 [Check dependencies img]: .images/check-dependencies.png
 [Debug messages img]: .images/debug-messages.png
+[Update-bash-helpers url]: https://github.com/nafigator/dotfiles/blob/0a7439aaa2fdf12016b9b97e28fd082a9eb9bfa7/bash-home/.bash_functions#L135
