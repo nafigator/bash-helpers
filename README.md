@@ -16,7 +16,7 @@
 - [Idempotent source](#idempotent-source)
 
 ### Built-in CLI
-Out-of-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
+Out-of-the-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
 `example.sh -h`\
 ![Help example][Help example img]
@@ -45,7 +45,7 @@ printf '%s\n' "$(bold)$(red)ATTENTION!$(clr) Save $(cyan)failure$(clr)."
 </details>
 
 ### Formatted messages
-`error`, `inform`, `warning`, `debug`, `status`, `status_dbg`.
+`error`, `inform`, `warning`, `debug`, `status`, `status_dbg`, `die`.
 
 <details>
 <summary>Examples</summary>
@@ -55,10 +55,10 @@ inform 'Script start'
 warning 'Make backup!'
 error 'File not found'
 debug 'Fall back to 0'
-test -d /usr/local/nonexistent
-status 'Check /usr/local/nonexistent dir' $?
 test -d /usr/local/bin
 status 'Check /usr/local/bin dir' $?
+test -d /usr/local/nonexistent
+status 'Check /usr/local/nonexistent dir' $? || die
 ```
 ![Messages formatting][Messages formatting img]
 
@@ -81,7 +81,7 @@ status 'Check /usr/local/bin dir' $?
 <summary>Example</summary>
 
 ```bash
-check_dependencies yarn rust || exit 1
+check_dependencies yarn rust || die
 ```
 ![Check dependencies][Check dependencies img]
 </details>
@@ -92,9 +92,9 @@ check_dependencies yarn rust || exit 1
 <summary>Examples</summary>
 
 ```bash
-include google/client || exit 1
-include mysql/query-builder || exit 1
-include logger; status 'Logger including' $? || exit 1
+include google/client || die
+include mysql/query-builder || die
+include logger; status 'Logger including' $? || die
 ```
 </details>
 
@@ -115,6 +115,9 @@ status_dbg 'Visible because of DEBUG variable' $?
 ```
 ![Debug messages][Debug messages img]
 </details>
+
+> [!NOTE]
+> Unknown statuses trigger a warning and return 2.
 
 ### Idempotent source
 Safe to source multiple times; existing function overrides are preserved.
@@ -367,8 +370,12 @@ By default `include()` loads files from a fixed path:
 If you need a different location, use `BASH_HELPERS_INCLUDES` or redefine `include()` in your script.
 
 ## Update
-Just load new version bash-helpers.sh over current.
+Overwrite `bash-helpers.sh` with the new version.
 Example of bash-function [`update-bash-helpers`][Update-bash-helpers url].
+
+> [!NOTE]
+> After updating, start a fresh shell (`exec bash`) to load the new version.
+> Loaded functions and constants stay in memory otherwise.
 
 ## Dependencies
 
@@ -402,6 +409,7 @@ Required only when you call the corresponding function.
 | `error`, `inform`, `warning`, `debug` | `date`, `printf` (builtin)     |
 | `status`, `status_dbg`                | `date`, `printf` (builtin)     |
 | `check_dependencies`                  | `date`, `command -v` (builtin) |
+| `die`                                 | `date`, `printf` (builtin)     |
 | `float`                               | `sed`, `bc`                    |
 | `include`                             | - (pure bash)                  |
 | `usage_help`, `print_version`         | `basename`, `realpath`         |
@@ -413,10 +421,10 @@ Required only when you call the corresponding function.
 Use the bundled helper to verify dependencies before running your script:
 
 ```bash
-check_dependencies curl jq || exit 1
+check_dependencies curl jq || die
 ```
 > [!IMPORTANT]
-> Under `set -e`, call `check_dependencies ... || exit 1` so warnings are visible before exit.
+> Under `set -e`, call `check_dependencies ... || die` so warnings are visible before exit.
 
 ## Versioning
 [Semantic Versioning](https://semver.org). Function signatures are part of the public API.
