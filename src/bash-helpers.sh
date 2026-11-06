@@ -21,7 +21,7 @@
 #SOFTWARE.
 
 # shellcheck disable=SC2034
-BASH_HELPERS_VERSION=1.1.9
+BASH_HELPERS_VERSION=1.2.0
 
 # Guard against double source
 [[ -n ${_BASH_HELPERS_LOADED:-} ]] && return 0
@@ -403,7 +403,7 @@ function parse_options() {
 	return $result
 }
 
-# Function for getting bool values from git config
+# Function for getting bool values from git config.
 # Echoes 1 on ok_msg
 # Usage:
 #	git_config_bool "$PARAM" "$PROJECT_PATH"
@@ -418,4 +418,12 @@ function git_config_bool() {
 	[[ $value = true ]] && printf '1\n'
 
 	return 0
+}
+
+# Function for fatal error with optional message and exit code.
+# Usage:
+#	die "Undefined command" 2
+function die() {
+	error "${1:-Fatal error}"
+	exit "${2:-1}"
 }
