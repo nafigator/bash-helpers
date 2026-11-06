@@ -103,7 +103,7 @@ function clr() {
 # Function for handling help flags.
 # If needed redefine and modify for your needs.
 function usage_help() {
-  printf '%sUsage:%s
+	printf '%sUsage:%s
   %s [OPTIONS...]
 
 %sOptions:%s
@@ -245,8 +245,8 @@ function status_dbg() {
 
 # Function for checking script dependencies
 # Examples:
-#     check_dependencies go || exit 1
-#     check_dependencies python date curl || exit 1
+#     check_dependencies go || die
+#     check_dependencies python date curl || die
 function check_dependencies() {
 	local result=0
 	local code cmd
@@ -404,7 +404,7 @@ function parse_options() {
 }
 
 # Function for getting bool values from git config.
-# Echoes 1 on ok_msg
+# Echoes 1 when the value evaluates to true
 # Usage:
 #	git_config_bool "$PARAM" "$PROJECT_PATH"
 function git_config_bool() {

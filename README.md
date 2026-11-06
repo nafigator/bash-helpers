@@ -26,12 +26,16 @@ Out-of-the-box handling `-h`/`--help`, `-v`/`--version`, `-d`/`--debug`.
 
 `example.sh --debug -v`\
 ![Debug example][Debug example img]
+
 ### Pure bash core
 No `awk`/`sed`/`jq` needed for colors, messages, statuses, or option parsing. Works in minimal images (`alpine`, `debian:slim`, `distroless`).
+
 ### Strict-mode safe
 `set -eu` in your script does not break the library or your error handling.
+
 ### Runs on bash 3.2+
 Same code works on stock macOS (`/bin/bash` 3.2), Linux, and BSD - no `brew install bash` or shebang surgery needed.
+
 ### Color and formatting functions
 `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray` `bold` `clr`.
 
@@ -118,6 +122,7 @@ status_dbg 'Visible because of DEBUG variable' $?
 
 > [!NOTE]
 > Unknown statuses trigger a warning and return 2.
+> This is a change from 1.1.8, where unknown statuses returned 0.
 
 ### Idempotent source
 Safe to source multiple times; existing function overrides are preserved.
