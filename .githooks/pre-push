@@ -3,7 +3,7 @@
 set -o pipefail
 
 # release v1.2.0
-readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/86cd071/src/bash-helpers.sh"
+readonly HELPERS_URL="https://raw.githubusercontent.com/nafigator/bash-helpers/abecb8e/src/bash-helpers.sh"
 readonly HELPERS_DIR="$HOME/.local/lib/bash/includes"
 readonly HELPERS_LIB="$HELPERS_DIR/bash-helpers.sh"
 
